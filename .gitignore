@@ -4,18 +4,13 @@
 *.egg*
 *.rdb
 .idea/
-
 pip-log.txt
-
-
 tmp/*
-
 *.log.*
 *.log
 *.db
 db/
 test_db/
-
 *.sublime-project
 *.sublime-workspace
 media/*
@@ -40,4 +35,4 @@ tms/conftest.py
 tms/docker-compose.yml
 tms/Dockerfile
 tms/tms.db
-tms/utils
+
