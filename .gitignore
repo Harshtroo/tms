@@ -39,16 +39,16 @@ htmlcov/
 .vscode/*
 
 
-.eslintrc.yml
-.flake8
-.isort.cfg
-.pre-commit-config.yaml
-.prettierrc.yml
-.AUTHORS.rst
-.LICENSE.rst
-.pytest.ini
-.README.rst
-.runtime.txt
+eslintrc.yml
+flake8
+isort.cfg
+pre-commit-config.yaml
+prettierrc.yml
+AUTHORS.rst
+LICENSE.rst
+pytest.ini
+README.rst
+runtime.txt
 tms/utils/
 tms/user/
 tms/conftest.py
