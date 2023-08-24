@@ -1,0 +1,16 @@
+
+*.py[cod]
+pycache/
+.idea/
+tmp/*
+*.log.*
+*.log
+tms/media/*
+.idea/*
+
+conftest.py
+docker-compose.yml
+Dockerfile
+user/
+utils/
+
