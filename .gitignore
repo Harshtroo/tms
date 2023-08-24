@@ -1,14 +1,12 @@
+
 *.py[cod]
-__pycache__/
+pycache/
 .idea/
 tmp/*
 *.log.*
 *.log
 tms/media/*
 .idea/*
-.templates/
-.templates
-.env
 
 tms/utils/
 tms/user/
@@ -16,4 +14,3 @@ tms/conftest.py
 tms/docker-compose.yml
 tms/Dockerfile
 tms/tms.db
-
