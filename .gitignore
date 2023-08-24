@@ -8,11 +8,9 @@ tmp/*
 tms/media/*
 .idea/*
 
-tms/utils/
-tms/user/
+tms/utils/*
+tms/user/*
 tms/conftest.py
 tms/docker-compose.yml
 tms/Dockerfile
 tms/tms.db
-
-tms/u
