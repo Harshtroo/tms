@@ -24,14 +24,7 @@ class SingUpSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         groups_data = validated_data.pop('groups', [])
-        user = User.objects.create(
-            username=validated_data.get("username"),
-            first_name=validated_data.get("first_name"),
-            last_name=validated_data.get("last_name"),
-            email=validated_data.get("email"),
-            password=validated_data.get("password"),
-        )
+        user = super().create(validated_data)
         user.save()
-        for group in groups_data:
-            user.groups.add(group)
+        user.groups.add(*groups_data)
         return user
