@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView
-from clickup.serializer import SingUpSerializer
+from clickup.serializer import RegistrationSerializer
 
 
 class SingUpView(CreateAPIView):
-    serializer_class = SingUpSerializer
+    serializer_class = RegistrationSerializer
