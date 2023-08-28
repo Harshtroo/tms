@@ -10,7 +10,7 @@ tms/media/*
 tms/tms.db
 
 ### Python template
-*__pycache__/*
+__pycache__/
 *.py[cod]
 *$py.class
 
