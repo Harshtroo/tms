@@ -14,7 +14,7 @@ tms/tms.db
 __pycache__/
 *.py[cod]
 *$py.class
-
+tms/__pycache__/*
 
 
 
