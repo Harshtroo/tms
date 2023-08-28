@@ -11,6 +11,7 @@ urlpatterns = [
 
 
     path("admin/", admin.site.urls),
+    path("", include("clickup.urls")),
     # path("", include(admin.site.urls) ),
     
     # path("user/", include("user.urls", namespace="user")),

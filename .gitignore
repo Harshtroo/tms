@@ -1,13 +1,14 @@
 
-*.py[cod]
-pycache/
+__pycache__/
+
+*.py[co]
+
 .idea/
 tmp/*
 *.log.*
 *.log
 tms/media/*
 .idea/*
-
 
 
 tms/tms.db
