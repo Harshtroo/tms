@@ -5,17 +5,6 @@ from django.contrib.auth.hashers import make_password
 from clickup import constant
 
 
-class GroupSerializer(serializers.Serializer):
-    GROUP_CHOICES = ["Admin", "Project Manager", "Developer"]
-    for groups in GROUP_CHOICES:
-        group, created = Group.objects.get_or_create(name=groups)
-        group.save()
-
-    class Meta:
-        model = Group
-        fields = ["name", "permissions"]
-
-
 class RegistrationSerializer(serializers.ModelSerializer):
     password_confirm = serializers.CharField(write_only=True)
 
