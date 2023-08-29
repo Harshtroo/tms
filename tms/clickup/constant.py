@@ -1,1 +1,1 @@
-password_not_match = "Password not Match."
+PASSWORD_ERROR_MESSAGE = "Password not Match."
