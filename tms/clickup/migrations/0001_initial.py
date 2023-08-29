@@ -2,25 +2,34 @@
 
 from django.db import migrations
 from django.contrib.auth.models import Group, Permission
-
+from django.contrib.contenttypes.models import ContentType
 
 def create_groups(apps, schema_editor):
-    GROUP_CHOICES = {
-        "Admin": [Permission.objects.all()],
-        "Project Manager": ["add_project", "create_project", "delete_project", "create_task", "change_task",
-                            "delete_task"],
-        "Developer": ["create_task", "change_task", "delete_task"]
-    }
 
-    for group_name, permissions in GROUP_CHOICES:
+
+
+    GROUP_CHOICES = {
+        "Admin": Permission.objects.all(),
+        "Project Manager": ["add_project", "change_project", "view_project", "delete_project"],
+        "Developer": []
+    }
+    for group_name, permissions in GROUP_CHOICES.items():
         group, created = Group.objects.get_or_create(name=group_name)
 
+        permission = Permission.objects.get(
+            codename='can_add_project',
+        )
+
+        group.permissions.add(permission)
         for permission in permissions:
             if isinstance(permission, str):
-                perm = Permission.objects.get(codename=permission)
+                try:
+                    permission = Permission.objects.get(codename=permission)
+                    group.permissions.add(permission)
+                except Permission.DoesNotExist:
+                    pass
             else:
-                perm = permission
-            group.permissions.add(perm)
+                group.permissions.add(permission)
         group.save()
 
 
