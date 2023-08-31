@@ -2,35 +2,28 @@
 
 from django.db import migrations
 from django.contrib.auth.models import Group, Permission
-from django.contrib.contenttypes.models import ContentType
+from django.db import transaction
 
 def create_groups(apps, schema_editor):
-
-
-
     GROUP_CHOICES = {
         "Admin": Permission.objects.all(),
-        "Project Manager": ["add_project", "change_project", "view_project", "delete_project"],
-        "Developer": []
-    }
-    for group_name, permissions in GROUP_CHOICES.items():
-        group, created = Group.objects.get_or_create(name=group_name)
+        "Project Manager": [],
+        "Developer": []}
 
-        permission = Permission.objects.get(
-            codename='can_add_project',
-        )
+    with transaction.atomic():
+        for group_name, permissions in GROUP_CHOICES.items():
+            group, created = Group.objects.get_or_create(name=group_name)
 
-        group.permissions.add(permission)
-        for permission in permissions:
-            if isinstance(permission, str):
-                try:
-                    permission = Permission.objects.get(codename=permission)
+            for permission in permissions:
+                if isinstance(permission, str):
+                    try:
+                        permission = Permission.objects.get(codename=permission)
+                        group.permissions.add(permission)
+                    except Permission.DoesNotExist:
+                        pass
+                else:
                     group.permissions.add(permission)
-                except Permission.DoesNotExist:
-                    pass
-            else:
-                group.permissions.add(permission)
-        group.save()
+            group.save()
 
 
 class Migration(migrations.Migration):
