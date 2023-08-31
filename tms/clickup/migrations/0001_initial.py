@@ -4,11 +4,13 @@ from django.db import migrations
 from django.contrib.auth.models import Group, Permission
 from django.db import transaction
 
+
 def create_groups(apps, schema_editor):
     GROUP_CHOICES = {
         "Admin": Permission.objects.all(),
-        "Project Manager": [],
-        "Developer": []}
+        "Project Manager": ["add_project", "change_project", "delete_project", "add_task", "change_task",
+                            "delete_task"],
+        "Developer": ["add_task", "change_task", "delete_task"]}
 
     with transaction.atomic():
         for group_name, permissions in GROUP_CHOICES.items():
