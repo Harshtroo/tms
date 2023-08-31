@@ -1,6 +1,4 @@
-
-*.py[cod]
-pycache/
+*.py[co]
 .idea/
 tmp/*
 *.log.*
@@ -8,6 +6,13 @@ tmp/*
 tms/media/*
 .idea/*
 
-
-
 tms/tms.db
+
+### Python template
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+
+
