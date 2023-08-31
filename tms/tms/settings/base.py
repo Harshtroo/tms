@@ -5,8 +5,6 @@ Django settings for tms project.
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
 
-
-
 ########## PATH CONFIGURATION
 BASE_DIR = dirname(dirname(__file__) + "../../../")
 
@@ -47,8 +45,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -165,10 +161,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "clickup",
     "rest_framework",
+    "rest_framework.authtoken",
 ]
-
-
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -191,27 +185,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 
-
-
-
-
-
-
 # Analytics
 # GOOGLE_ANALYTICS = env.str("GOOGLE_ANALYTICS", default="")
 
 CACHE_ENGINES = {
-    
+
     "dummy": {
         "BACKEND": "django.core.cache.backends.dummy.DummyCache",
     }
 }
-
-# CACHES = {
-#     "default": CACHE_ENGINES[env.str("CACHE", default="dummy")]
-# }
-
-
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -221,7 +203,3 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10
 }
-
-
-
-# SENTRY_DSN = env.str("SENTRY_DSN", "")
