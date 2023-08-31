@@ -29,11 +29,16 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
 
-    def create(self, validated_data):
-        username = validated_data["username"]
-        password = validated_data["password"]
-        user = authenticate(username=username, password=password)
-        if not user:
-            raise serializers.ValidationError(constant.LOGIN_ERROR_MESSAGE)
-        token, _ = Token.objects.get_or_create(user=user)
-        return token
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if not user:
+                raise serializers.ValidationError("Incorrect Username and Password. Please try again.")
+        else:
+            raise serializers.ValidationError("Both username and password are required.")
+
+        data['user'] = user
+        return data

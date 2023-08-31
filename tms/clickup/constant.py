@@ -1,2 +1,2 @@
 PASSWORD_ERROR_MESSAGE = "Password not Match."
-LOGIN_ERROR_MESSAGE = "Invalid Username and Password."
+LOGIN_ERROR_MESSAGE = "Enter valid username or password."
