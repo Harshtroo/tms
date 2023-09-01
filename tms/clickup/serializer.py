@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-
+from django.contrib.auth import authenticate
 from clickup import constant
 
 
@@ -21,4 +21,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
         validated_data["password"] = make_password(validated_data.get("password"))
         validated_data.pop('password_confirm')
         user = super().create(validated_data)
+        return user
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        user = authenticate(username =data["username"], password=data["password"])
+        if not user:
+            raise serializers.ValidationError({"error":constant.LOGIN_ERROR_MESSAGE})
         return user
