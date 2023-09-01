@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateAPIView, ListAPIView, DestroyAPIView
-
+from rest_framework.permissions import IsAuthenticated
 from clickup.serializer import RegistrationSerializer, LoginSerializer, ProjectSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -26,6 +26,7 @@ class LoginView(ObtainAuthToken):
 class ProjectCreateView(ListCreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -35,14 +36,10 @@ class ProjectCreateView(ListCreateAPIView):
                              "data": serializer.validated_data}, status=status.HTTP_201_CREATED)
 
 
-class ProjectListView(ListAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-
-
 class ProjectUpdateView(RetrieveUpdateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -57,6 +54,7 @@ class ProjectUpdateView(RetrieveUpdateAPIView):
 class ProjectDeleteView(DestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

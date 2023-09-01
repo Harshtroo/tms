@@ -1,20 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_extensions.db.models import TimeStampedModel
-
-PRIORITY_CHOICES = (
-    ("Low", "Low"),
-    ("Normal", "Normal"),
-    ("High", "High"),
-    ("Urgent", "Urgent"),
-)
-
-STATUS_CHOICES = (
-    ("pending", "Pending"),
-    ("in_process", "In Process"),
-    ("completed", "Completed"),
-)
-
+from clickup.choices import PRIORITY_CHOICES,STATUS_CHOICES
 
 class Project(TimeStampedModel):
     name = models.CharField(max_length=50)
