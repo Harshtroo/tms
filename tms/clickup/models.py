@@ -14,7 +14,7 @@ class Project(TimeStampedModel):
 class Task(TimeStampedModel):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    assign = models.ForeignKey(User, on_delete=models.CASCADE)
+    assignee = models.ForeignKey(User, on_delete=models.CASCADE)
     due_date = models.DateField()
     priority = models.CharField(max_length=20,choices=PRIORITY_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
