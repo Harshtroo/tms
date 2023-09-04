@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
 from clickup import constant
+from clickup.models import Project
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -29,7 +30,14 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, data):
-        user = authenticate(username =data["username"], password=data["password"])
+        user = authenticate(username=data["username"], password=data["password"])
         if not user:
-            raise serializers.ValidationError({"error":constant.LOGIN_ERROR_MESSAGE})
+            raise serializers.ValidationError({"error": constant.LOGIN_ERROR_MESSAGE})
         return user
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ["id", "name", "description"]
+        extra_kwargs = {"name": {"required": True}, }
