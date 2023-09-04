@@ -162,6 +162,7 @@ INSTALLED_APPS = [
     "clickup",
     "rest_framework",
     "rest_framework.authtoken",
+    "django_summernote",
 ]
 
 AUTH_PASSWORD_VALIDATORS = [

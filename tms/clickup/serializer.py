@@ -3,7 +3,8 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
 from clickup import constant
-from clickup.models import Project
+from clickup.models import Project, Task
+from django_summernote.fields import SummernoteTextField
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -41,3 +42,11 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = ["id", "name", "description"]
         extra_kwargs = {"name": {"required": True}, }
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    description = SummernoteTextField()
+
+    class Meta:
+        model = Task
+        fields = ["id", "project", "name", "assignee", "due_date", "priority", "status", "description"]

@@ -1,11 +1,12 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
-from clickup.serializer import RegistrationSerializer, LoginSerializer, ProjectSerializer
+from clickup.serializer import RegistrationSerializer, LoginSerializer, ProjectSerializer, TaskSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
-from clickup.models import Project
+from clickup.models import Project, Task
+from django_summernote.admin import SummernoteModelAdmin
 
 
 class SingUpView(CreateAPIView):
@@ -33,3 +34,8 @@ class ProjectRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated, DjangoModelPermissions]
+
+
+class TaskCreateView(ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer

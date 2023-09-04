@@ -4,16 +4,13 @@ from django.contrib import admin
 from django.conf import settings
 from django.views.generic.base import TemplateView
 
-
-
-
 urlpatterns = [
-
 
     path("admin/", admin.site.urls),
     path("", include("clickup.urls")),
+    path("summernote/", include("django_summernote.urls")),
     # path("", include(admin.site.urls) ),
-    
+
     # path("user/", include("user.urls", namespace="user")),
     # path("api/v1/", include("user.api.urls", namespace="user_api")),
 
