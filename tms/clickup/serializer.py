@@ -30,15 +30,14 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, data):
-        user = authenticate(username =data["username"], password=data["password"])
+        user = authenticate(username=data["username"], password=data["password"])
         if not user:
-            raise serializers.ValidationError({"error":constant.LOGIN_ERROR_MESSAGE})
+            raise serializers.ValidationError({"error": constant.LOGIN_ERROR_MESSAGE})
         return user
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Project
         fields = ["id", "name", "description"]
-        extra_kwargs = {"name":{"required": True},}
+        extra_kwargs = {"name": {"required": True}, }

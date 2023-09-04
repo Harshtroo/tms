@@ -1,5 +1,4 @@
 from rest_framework import status
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from clickup.serializer import RegistrationSerializer, LoginSerializer, ProjectSerializer
@@ -7,7 +6,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
 from clickup.models import Project
-
+from clickup.permissions import GroupPermissions
 
 
 class SingUpView(CreateAPIView):
@@ -28,10 +27,10 @@ class LoginView(ObtainAuthToken):
 class ProjectCreateView(ListCreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    permission_classes = [GroupPermissions]
 
 
 class ProjectRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = [IsAuthenticated]
-
+    permission_classes = [IsAuthenticated, GroupPermissions]
