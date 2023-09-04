@@ -39,3 +39,4 @@ class ProjectRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 class TaskCreateView(ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [DjangoModelPermissions]
