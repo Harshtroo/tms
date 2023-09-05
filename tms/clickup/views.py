@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
 from clickup.models import Project, Task
 from django.shortcuts import render
-
+from rest_framework.parsers import JSONParser
 
 def get_home_page(request):
     return render(request, "home.html")
@@ -20,6 +20,7 @@ def get_register_page(request):
 class SingUpView(CreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
+    parser_class = [JSONParser]
 
 
 class LoginView(ObtainAuthToken):

@@ -3,6 +3,7 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}"/>
+<div id="message-container"></div>
 <form method="POST" id="user_register">
     {% csrf_token %}
     <section class="vh-100 gradient-custom">
