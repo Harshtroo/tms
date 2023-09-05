@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}"/>
+<form method="POST" id="user_register">
+    {% csrf_token %}
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-md-5  pb-5">
+                                <h2 class="fw-bold mb-2 mb-4">Register Page</h2>
+                                <div class="form-outline form-white mb-4">
+                                    <input type="text" id="first_name" class="form-control form-control-lg"
+                                           placeholder="Enter your First name">
+                                </div>
+
+                                <div class="form-outline form-white mb-4">
+                                    <input type="text" id="last_name" class="form-control form-control-lg"
+                                           placeholder="Enter your Last name">
+                                </div>
+
+                                <div class="form-outline form-white mb-4">
+                                    <input type="text" id="Username" class="form-control form-control-lg"
+                                           placeholder="Enter your Username">
+                                </div>
+
+                                <div class="form-outline form-white mb-4">
+                                    <input type="email" id="typeEmailX" class="form-control form-control-lg"
+                                           placeholder="Enter your email">
+                                </div>
+
+                                <div class="dropdown mb-4">
+                                    <button class="btn btn-outline-light dropdown-toggle form-control form-control-lg"
+                                            type="button"
+                                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Select your Role
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="#">Country 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Country 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Country 3</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="form-outline form-white mb-4">
+                                    <input type="password" id="password" class="form-control form-control-lg"
+                                           placeholder="Enter your Password.">
+                                </div>
+
+                                <div class="form-outline form-white mb-4">
+                                    <input type="password" id="new_password" class="form-control form-control-lg"
+                                           placeholder="Enter your Confirm Password.">
+                                </div>
+
+                                <button class="btn btn-outline-light btn-lg px-5 mt-4" type="submit">Submit</button>
+
+                                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
+                                                                                                        class="fw-bold text-body"><u>
+                                    <mark class="blue">Login here</mark>
+                                </u></a></p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+<script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock %}
