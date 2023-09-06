@@ -23,11 +23,10 @@ $("#user_register").on("submit",function(event){
         }, 5000);
     };
      var callback = function(response) {
-                        debugger
-                        if (response.status === "success") {
+                        if (response.status == "success") {
                             showMessage("Registration successful!", "green");
                             window.location.href = baseURL + "/login/";
-                        } else if (response.status === "error") {
+                        } else if (response.status == "error") {
                             showMessage("Error: " + response.message, "red");
                         }
                       };
