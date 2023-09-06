@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, AllowAny
@@ -7,20 +8,21 @@ from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
 from clickup.models import Project, Task
 from django.shortcuts import render
-from rest_framework.parsers import JSONParser
+
 
 def get_home_page(request):
     return render(request, "home.html")
 
 
 def get_register_page(request):
-    return render(request, "register.html")
+    group = Group.objects.all()
+    return render(request, "register.html", {"group": group})
 
 
 class SingUpView(CreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
-    parser_class = [JSONParser]
+
 
 
 class LoginView(ObtainAuthToken):

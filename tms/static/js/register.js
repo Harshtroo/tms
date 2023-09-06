@@ -5,13 +5,17 @@ $("#user_register").on("submit",function(event){
 
      event.preventDefault()
      var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
-     var resultData = $(this).serialize();
-     var contentType = "application/json"
-     var processData = true
+     var resultData = {"first_name":$("#first_name").val(),
+                        "last_name" :$("#last_name").val(),
+                        "username" :$("#username").val(),
+                        "email":$("#email").val(),
+                        "groups":$("#groups").val(),
+                        "password":$("#password").val(),
+                        "password_confirm":$("#password_confirm").val()}
+
      var showMessage = function (message, color) {
         var messageElement = $("<div>").text(message).css("color", color);
         $("#message-container").html(messageElement);
-
         setTimeout(function () {
             messageElement.fadeOut(500, function () {
                 $(this).remove();
@@ -19,6 +23,7 @@ $("#user_register").on("submit",function(event){
         }, 5000);
     };
      var callback = function(response) {
+                        debugger
                         if (response.status === "success") {
                             showMessage("Registration successful!", "green");
                             window.location.href = baseURL + "/login/";
@@ -27,5 +32,5 @@ $("#user_register").on("submit",function(event){
                         }
                       };
 
-     postAjaxCall(registerURL, csrfToken, resultData,  callback, contentType, processData)
+     postAjaxCall(registerURL, csrfToken, resultData,  callback)
 })
