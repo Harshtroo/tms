@@ -19,7 +19,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if validated_data.get("password") != validated_data.get("password_confirm"):
-            raise serializers.ValidationError(constant.password_not_match)
+            raise serializers.ValidationError(constant.PASSWORD_ERROR_MESSAGE)
         validated_data["password"] = make_password(validated_data.get("password"))
         validated_data.pop('password_confirm')
         user = super().create(validated_data)

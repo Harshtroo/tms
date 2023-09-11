@@ -23,6 +23,11 @@ class SingUpView(CreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return JsonResponse({"data": serializer.data, "status": "success"}, status=status.HTTP_201_CREATED)
 
 
 class LoginView(ObtainAuthToken):

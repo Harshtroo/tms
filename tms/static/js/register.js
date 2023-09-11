@@ -1,8 +1,7 @@
 
-var registerURL = baseURL + '/register/'
+var registerURL = "/register/"
 
 $("#user_register").on("submit",function(event){
-
      event.preventDefault()
      var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
      var resultData = {"first_name":$("#first_name").val(),
@@ -13,21 +12,11 @@ $("#user_register").on("submit",function(event){
                         "password":$("#password").val(),
                         "password_confirm":$("#password_confirm").val()}
 
-     var showMessage = function (message, color) {
-        var messageElement = $("<div>").text(message).css("color", color);
-        $("#message-container").html(messageElement);
-        setTimeout(function () {
-            messageElement.fadeOut(500, function () {
-                $(this).remove();
-            });
-        }, 5000);
-    };
      var callback = function(response) {
                         if (response.status == "success") {
-                            showMessage("Registration successful!", "green");
-                            window.location.href = baseURL + "/login/";
-                        } else if (response.status == "error") {
-                            showMessage("Error: " + response.message, "red");
+                            showMessage("Registration successful", "green");
+                        } else {
+                            showMessage("Error: " + reason, "red");
                         }
                       };
 
