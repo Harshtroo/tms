@@ -20,5 +20,5 @@ var showMessage = function (message, color) {
             messageElement.fadeOut(500, function () {
                 $(this).remove();
             });
-        }, 5000);
+        }, 3000);
     };
