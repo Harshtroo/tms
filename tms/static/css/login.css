@@ -4,6 +4,11 @@ background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 11
 background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
 }
 
+.message {
+    font-size : 20px ;
+}
+
+
 * {
 	box-sizing: border-box;
 	margin: 0;

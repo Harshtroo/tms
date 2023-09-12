@@ -13,12 +13,14 @@ function postAjaxCall(url, csrfToken, resultData,redirectURL) {
   });
 }
 
-var callback = function (response,redirectURL){
-    if (response.status == "success") {
-                            document.location.href = redirectURL
-                            showMessage(response.success_message, "green");
+var callback = function (context,redirectURL){
+    if (context.status == "success") {
+                            showMessage(context.success_message, "green");
+                            setTimeout(function () {
+                                window.location.href = redirectURL;
+                            }, 5000);
                         } else {
-                            showMessage("Error: " + response.errors, "red");
+                            showMessage("Error: " + context.errors, "red");
                         }
 }
 
@@ -26,9 +28,4 @@ var showMessage = function (message, color) {
 
         var messageElement = $("<div>").text(message).css("color", color);
         $("#message-container").html(messageElement);
-        setTimeout(function () {
-            messageElement.fadeOut(500, function () {
-                $(this).remove();
-            });
-        }, 3000);
     };
