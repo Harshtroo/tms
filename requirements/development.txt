@@ -4,4 +4,5 @@
 
 django-debug-toolbar==3.7.0
 black==22.10.0
-django-extensions-3.2.3
+django-extensions==3.2.3
+django-summernote==0.8.20.0
