@@ -12,13 +12,6 @@ $("#user_register").on("submit",function(event){
                         "password":$("#password").val(),
                         "password_confirm":$("#password_confirm").val()}
 
-     var callback = function(response) {
-                        if (response.status == "success") {
-                            showMessage("Registration successful", "green");
-                        } else {
-                            showMessage("Error: " + reason, "red");
-                        }
-                      };
-
-     postAjaxCall(registerURL, csrfToken, resultData,  callback)
+     var redirectURL = "/login_page/"
+     postAjaxCall(registerURL, csrfToken, resultData,redirectURL)
 })

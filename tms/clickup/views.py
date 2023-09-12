@@ -19,6 +19,10 @@ def get_register_page(request):
     return render(request, "register.html", {"group": group})
 
 
+def get_login_page(request):
+    return render(request, "login.html")
+
+
 class SingUpView(CreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
@@ -27,7 +31,8 @@ class SingUpView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        return JsonResponse({"data": serializer.data, "status": "success"}, status=status.HTTP_201_CREATED)
+        return JsonResponse({"data": serializer.data, "status": "success", "success_message": "Register successfully"},
+                            status=status.HTTP_201_CREATED)
 
 
 class LoginView(ObtainAuthToken):
@@ -36,9 +41,10 @@ class LoginView(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
         token, created = Token.objects.get_or_create(user=user)
-        return JsonResponse({'token': token.key,
+        return JsonResponse({"token": token.key,
+                             "status": "success",
                              "user": user.username,
-                             "message": "Successfully logged in."}, status=status.HTTP_200_OK)
+                             "success_message": "Successfully logged in."}, status=status.HTTP_200_OK)
 
 
 class ProjectCreateView(ListCreateAPIView):

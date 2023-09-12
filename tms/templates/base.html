@@ -15,7 +15,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-0 py-3">
     <div class="container-xl">
 
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'home' %}">
             <img src="https://cdn-icons-png.flaticon.com/128/599/599928.png" class="h-8 icon" alt="...">
         </a>
 
@@ -29,7 +29,7 @@
             <div class="navbar-nav mx-lg-auto"></div>
 
             <div class="navbar-nav ms-lg-4">
-                <a class="nav-item nav-link" href="#">Sign in</a>
+                <a class="nav-item nav-link" href="{% url 'login_page' %}">Sign in</a>
             </div>
 
             <div class="navbar-nav ms-lg-4">
