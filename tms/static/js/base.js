@@ -8,7 +8,7 @@ function postAjaxCall(url, csrfToken, resultData,redirectURL) {
     success: function(response){
             callback(response, redirectURL)},
     error: function(reason, xhr) {
-          console.log("error in processing your request", reason.responseText);
+          callback({responseText: reason.responseText}, redirectURL)
     }
   });
 }
@@ -20,7 +20,7 @@ var callback = function (context,redirectURL){
                                 window.location.href = redirectURL;
                             }, 5000);
                         } else {
-                            showMessage("Error: " + context.errors, "red");
+                            showMessage(context.responseText, "red");
                         }
 }
 
