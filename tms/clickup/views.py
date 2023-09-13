@@ -1,15 +1,16 @@
 from django.contrib.auth.models import Group
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, AllowAny
 from clickup.serializer import RegistrationSerializer, LoginSerializer, ProjectSerializer, TaskSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from django.http import JsonResponse
 from clickup.models import Project, Task
 from django.shortcuts import render
 from rest_framework.response import Response
 from clickup import constant
+from rest_framework.views import APIView
 
 
 def get_home_page(request):
@@ -60,6 +61,22 @@ class LoginView(ObtainAuthToken):
             "data": serializer.data,
             **context
         }, status=status.HTTP_201_CREATED)
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            if request.user.is_authenticated:
+                request.user.auth_token.delete()
+        except (AttributeError, ObjectDoesNotExist):
+            pass
+        context = {
+            "status": "success",
+            "success_message": constant.LOGOUT_MESSAGE,
+        }
+        return Response(context, status=status.HTTP_200_OK)
 
 
 class ProjectCreateView(ListCreateAPIView):

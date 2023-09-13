@@ -18,7 +18,10 @@
         <a class="navbar-brand" href="{% url 'home' %}">
             <img src="https://cdn-icons-png.flaticon.com/128/599/599928.png" class="h-8 icon" alt="...">
         </a>
-
+        {{request.user}}
+        {% if request.user.is_authenticated %}
+        <h3>{{username}}</h3>
+        {% endif %}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,6 +36,10 @@
             </div>
 
             <div class="navbar-nav ms-lg-4">
+                <a class="nav-item nav-link" id="logout" href="{% url 'logout' %}">logout</a>
+            </div>
+
+            <div class="navbar-nav ms-lg-4">
                 <a href="{% url 'get_register' %}" class="nav-item nav-link">
                     Register
                 </a>
@@ -40,6 +47,7 @@
         </div>
     </div>
 </nav>
+
 {% block content %}
 
 {% endblock %}
