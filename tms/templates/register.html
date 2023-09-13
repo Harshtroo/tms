@@ -3,8 +3,8 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}"/>
+<div id="message-container" class="message"></div>
 
-<div id="message-container"></div>
 <form method="POST" id="user_register">
     {% csrf_token %}
     <section class="vh-100 gradient-custom">
@@ -57,7 +57,7 @@
 
                                 <button class="btn btn-outline-light btn-lg px-5 mt-4" type="submit">Submit</button>
 
-                                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
+                                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="{% url 'login_page' %}"
                                                                                                         class="fw-bold text-body"><u>
                                     <mark class="blue">Login here</mark>
                                 </u></a></p>

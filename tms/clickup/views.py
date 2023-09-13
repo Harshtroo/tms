@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
 from clickup.models import Project, Task
 from django.shortcuts import render
+from rest_framework.response import Response
+from clickup import constant
 
 
 def get_home_page(request):
@@ -19,6 +21,10 @@ def get_register_page(request):
     return render(request, "register.html", {"group": group})
 
 
+def get_login_page(request):
+    return render(request, "login.html")
+
+
 class SingUpView(CreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
@@ -26,8 +32,16 @@ class SingUpView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         self.perform_create(serializer)
-        return JsonResponse({"data": serializer.data, "status": "success"}, status=status.HTTP_201_CREATED)
+        context = {
+            "status": "success",
+            "success_message": constant.REGISTER_SUCCESS_MESSAGE
+        }
+        return Response({
+            "data": serializer.data,
+            **context
+        }, status=status.HTTP_201_CREATED)
 
 
 class LoginView(ObtainAuthToken):
@@ -36,9 +50,16 @@ class LoginView(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
         token, created = Token.objects.get_or_create(user=user)
-        return JsonResponse({'token': token.key,
-                             "user": user.username,
-                             "message": "Successfully logged in."}, status=status.HTTP_200_OK)
+        context = {
+            "token": token.key,
+            "user": user.username,
+            "status": "success",
+            "success_message": constant.LOGIN_SUCCESS_MESSAGE
+        }
+        return Response({
+            "data": serializer.data,
+            **context
+        }, status=status.HTTP_201_CREATED)
 
 
 class ProjectCreateView(ListCreateAPIView):

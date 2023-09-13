@@ -1,24 +1,31 @@
 
-function postAjaxCall(url, csrfToken, resultData,  callback) {
+function postAjaxCall(url, csrfToken, resultData,redirectURL) {
   $.ajax({
     url: url,
     method: "POST",
     headers: { 'X-CSRFToken': csrfToken },
     data: resultData,
-    success: callback,
+    success: function(response){
+            callback(response, redirectURL)},
     error: function(reason, xhr) {
-          console.log("error in processing your request", reason.responseText);
+          callback({responseText: reason.responseText}, redirectURL)
     }
   });
 }
 
+var callback = function (context,redirectURL){
+    if (context.status == "success") {
+                            showMessage(context.success_message, "green");
+                            setTimeout(function () {
+                                window.location.href = redirectURL;
+                            }, 5000);
+                        } else {
+                            showMessage(context.responseText, "red");
+                        }
+}
 
 var showMessage = function (message, color) {
+
         var messageElement = $("<div>").text(message).css("color", color);
         $("#message-container").html(messageElement);
-        setTimeout(function () {
-            messageElement.fadeOut(500, function () {
-                $(this).remove();
-            });
-        }, 3000);
     };
