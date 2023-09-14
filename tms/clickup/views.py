@@ -1,5 +1,6 @@
+from django.contrib.auth import logout
 from django.contrib.auth.models import Group
-from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, AllowAny
@@ -13,8 +14,8 @@ from clickup import constant
 from rest_framework.views import APIView
 
 
-def get_home_page(request):
-    return render(request, "home.html")
+class Home(TemplateView):
+    template_name = "home.html"
 
 
 def get_register_page(request):
@@ -64,19 +65,18 @@ class LoginView(ObtainAuthToken):
 
 
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        try:
-            if request.user.is_authenticated:
-                request.user.auth_token.delete()
-        except (AttributeError, ObjectDoesNotExist):
-            pass
-        context = {
-            "status": "success",
-            "success_message": constant.LOGOUT_MESSAGE,
-        }
-        return Response(context, status=status.HTTP_200_OK)
+        if request.user.is_authenticated:
+            token = request.user.auth_token.key
+            logout(request)
+            context = {
+                "status": "success",
+                "success_message": constant.LOGOUT_MESSAGE,
+                "token": token,
+            }
+            return Response(context, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 class ProjectCreateView(ListCreateAPIView):
