@@ -70,6 +70,7 @@ class LogoutView(APIView):
         if request.user.is_authenticated:
             token = request.user.auth_token.key
             logout(request)
+            breakpoint()
             context = {
                 "status": "success",
                 "success_message": constant.LOGOUT_MESSAGE,
