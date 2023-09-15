@@ -1,31 +1,32 @@
 
-function postAjaxCall(url, csrfToken, resultData,redirectURL) {
+function postAjaxCall(url, csrfToken, resultData, callback) {
   $.ajax({
     url: url,
     method: "POST",
     headers: { 'X-CSRFToken': csrfToken },
     data: resultData,
-    success: function(response){
-            callback(response, redirectURL)},
+    success:callback,
     error: function(reason, xhr) {
-          callback({responseText: reason.responseText}, redirectURL)
+        showMessage(reason.responseText, "red");
     }
   });
 }
 
-var callback = function (context,redirectURL){
-    if (context.status == "success") {
-                            showMessage(context.success_message, "green");
-                            setTimeout(function () {
-                                window.location.href = redirectURL;
-                            }, 5000);
-                        } else {
-                            showMessage(context.responseText, "red");
-                        }
-}
 
-var showMessage = function (message, color) {
 
-        var messageElement = $("<div>").text(message).css("color", color);
-        $("#message-container").html(messageElement);
-    };
+//
+//function postTokenAjaxCall(url, csrfToken, callback, resultData,redirectURL) {
+//  $.ajax({
+//    url: url,
+//    method: "POST",
+//    headers: { 'X-CSRFToken': csrfToken,"Authorization": "Token " + token },
+//    data: resultData,
+//    success: callback,
+//    error: function(reason, xhr) {
+//          callback({responseText: reason.responseText}, redirectURL)
+//    }
+//  });
+//}
+//
+//
+

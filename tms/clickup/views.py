@@ -8,7 +8,7 @@ from clickup.serializer import RegistrationSerializer, LoginSerializer, ProjectS
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from clickup.models import Project, Task
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from clickup import constant
 from rest_framework.views import APIView
@@ -68,13 +68,12 @@ class LogoutView(APIView):
 
     def post(self, request):
         if request.user.is_authenticated:
-            token = request.user.auth_token.key
-            logout(request)
-            breakpoint()
+            token = request.user.auth_token
+            token.delete()
             context = {
                 "status": "success",
                 "success_message": constant.LOGOUT_MESSAGE,
-                "token": token,
+
             }
             return Response(context, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
