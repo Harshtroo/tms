@@ -15,11 +15,10 @@ $("#login").on("submit",function(event){
                         "password":$("#password").val()}
      var redirectURL = homeURL
      var callback = function(response){
-//         console.log("context token ---------------",context.token)
          showMessage(response.success_message, "green");
                                 setTimeout(function () {
                                     window.location.href = redirectURL;
                                 }, 3000);
      }
-     postAjaxCall(loginURL, csrfToken, callback, resultData)
+     postAjaxCall(loginURL, csrfToken, resultData,callback)
 })
