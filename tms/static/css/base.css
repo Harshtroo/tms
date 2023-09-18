@@ -4,3 +4,12 @@
 .navbar{
     height: 60px;
 }
+.btn{
+    margin-top : 5%;
+    margin-left : 5%;
+}
+
+.modal{
+    margin-top : 10%;
+    width : 110%
+}

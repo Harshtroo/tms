@@ -18,10 +18,11 @@
         <a class="navbar-brand" href="{% url 'home' %}">
             <img src="https://cdn-icons-png.flaticon.com/128/599/599928.png" class="h-8 icon" alt="...">
         </a>
-        {{request.user}}
-        {% if request.user.is_authenticated %}
-        <h3>{{username}}</h3>
-        {% endif %}
+
+        <div class="navbar-nav ms-lg-4">
+            <h5 class="nav-item nav-link">{{user}}</h5>
+        </div>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -36,7 +37,7 @@
             </div>
 
             <div class="navbar-nav ms-lg-4">
-                <a class="nav-item nav-link" id="logout" >logout</a>
+                <a class="nav-item nav-link" id="logout" href="{% url 'logout' %}">logout</a>
             </div>
 
             <div class="navbar-nav ms-lg-4">
@@ -47,10 +48,39 @@
         </div>
     </div>
 </nav>
-<script src="{% static 'js/login.js' %}"></script>
+<button type="button" class="btn btn-secondary" id="add-project"><span class="bi bi-plus"></span> Add Project </button>
+
+
+
+<!--This is create project modal -->
+
+<div class="modal" tabindex="-1">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <label data-error="wrong" data-success="right" for="orangeForm-name" >Project name</label>
+          <input type="text" id="project_name" class="form-control validate">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="create_project">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 {% block content %}
 
 {% endblock %}
+
 </body>
+<script src="{% static 'js/base.js' %}"></script>
 </html>

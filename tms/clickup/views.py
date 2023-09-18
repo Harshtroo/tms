@@ -26,6 +26,8 @@ def get_register_page(request):
 def get_login_page(request):
     return render(request, "login.html")
 
+def get_create_project_page(request):
+    return render(request,"project.html")
 
 class SingUpView(CreateAPIView):
     serializer_class = RegistrationSerializer
@@ -73,7 +75,6 @@ class LogoutView(APIView):
             context = {
                 "status": "success",
                 "success_message": constant.LOGOUT_MESSAGE,
-
             }
             return Response(context, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)

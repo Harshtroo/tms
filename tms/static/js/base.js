@@ -13,18 +13,42 @@ function postAjaxCall(url, csrfToken, resultData, callback) {
 }
 
 
-function postTokenAjaxCall(url, csrfToken, callback, resultData,redirectURL) {
+function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectURL) {
   $.ajax({
     url: url,
     method: "POST",
+    dataType:"application/json",
     headers: { 'X-CSRFToken': csrfToken,"Authorization": "Token " + token },
     data: resultData,
     success: callback,
     error: function(reason, xhr) {
-          callback({responseText: reason.responseText}, redirectURL)
+            debugger
+          showMessage(reason.responseText, "red");
     }
   });
 }
 
 
 
+$("#add-project").on("click",function(){
+    $('.modal').modal('show')
+
+})
+
+
+var homeURL = "http://127.0.0.1:8000/"
+var projectURL = "/create_project/"
+
+$("#create_project").on("click",function(){
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+    var redirectURL = homeURL
+    var resultData = {"name": $("#project_name").val()}
+    var redirectURL = homeURL
+    var callback = function(response){
+        console.log("response-------",response)
+    }
+    debugger
+
+    postTokenAjaxCall(projectURL, csrfToken, token, callback, resultData,redirectURL)
+})

@@ -1,31 +1,26 @@
-//
-//var logoutURL ="/logout/"
+
+var logoutURL ="/logout/"
 var homeURL = "http://127.0.0.1:8000/"
-//
-//
-document.getElementById("logout").addEventListener("click",function(){
+
+var showMessage = function (message, color) {
+        var messageElement = $("<div>").text(message).css("color", color);
+        $("#message-container").html(messageElement);
+    };
+
+$("#logout").on("click",function(event){
+         event.preventDefault()
          var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
          var redirectURL = homeURL
-         var resultData = ""
-         postAjaxCall(logoutURL, csrfToken, resultData,redirectURL)
+         var resultData = {}
+         var token = localStorage.getItem("token");
+
+         var callback = function(response){
+
+            showMessage(response.success_message, "green");
+                                setTimeout(function () {
+                                    window.location.href = redirectURL;
+                                });
+         }
+         postTokenAjaxCall(logoutURL, csrfToken, token, callback, resultData, redirectURL)
 })
-//
-////
-////document.getElementById("logout").addEventListener("click",function(){
-////    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
-////    var resultData = ""
-////    $.ajax({
-////        url: logoutURL,
-////        method: "POST",
-////        headers: { 'X-CSRFToken': csrfToken },
-////        data: resultData,
-////        success: function(response){
-////            window.location.href = redirectURL
-////            console.log("response--------------",response)
-////        },
-////        error: function(reason, xhr) {
-////
-////          }
-////    })
-////})
-//
+

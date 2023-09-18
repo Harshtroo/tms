@@ -17,8 +17,10 @@ $("#login").on("submit",function(event){
      var callback = function(response){
          showMessage(response.success_message, "green");
                                 setTimeout(function () {
+                                    localStorage.setItem("token", response.token);
                                     window.location.href = redirectURL;
-                                }, 3000);
+                                }, 2000);
      }
      postAjaxCall(loginURL, csrfToken, resultData,callback)
 })
+
