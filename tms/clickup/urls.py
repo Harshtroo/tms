@@ -2,7 +2,7 @@ from django.urls import path
 from clickup import views
 
 urlpatterns = [
-    path("", views.Home.as_view(), name="home"),
+    path("", views.home_view, name="home"),
     path("get_register/", views.get_register_page, name="get_register"),
     path("login_page/", views.get_login_page, name="login_page"),
     path("register/", views.SingUpView.as_view(), name="register"),

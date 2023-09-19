@@ -22,7 +22,7 @@ function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectU
     data: resultData,
     success: callback,
     error: function(reason, xhr) {
-            debugger
+
           showMessage(reason.responseText, "red");
     }
   });
@@ -35,20 +35,3 @@ $("#add-project").on("click",function(){
 
 })
 
-
-var homeURL = "http://127.0.0.1:8000/"
-var projectURL = "/create_project/"
-
-$("#create_project").on("click",function(){
-
-    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
-    var redirectURL = homeURL
-    var resultData = {"name": $("#project_name").val()}
-    var redirectURL = homeURL
-    var callback = function(response){
-        console.log("response-------",response)
-    }
-    debugger
-
-    postTokenAjaxCall(projectURL, csrfToken, token, callback, resultData,redirectURL)
-})

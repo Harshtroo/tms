@@ -1,6 +1,6 @@
 from django.contrib.auth import logout
 from django.contrib.auth.models import Group
-from django.views.generic import TemplateView
+from django.views.generic import  ListView
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, AllowAny
@@ -14,9 +14,12 @@ from clickup import constant
 from rest_framework.views import APIView
 
 
-class Home(TemplateView):
-    template_name = "home.html"
 
+def home_view(request):
+    context = {}
+    if request.user.is_authenticated:
+        context['username'] = request.user.username
+    return render(request, 'home.html', context)
 
 def get_register_page(request):
     group = Group.objects.all()
@@ -26,8 +29,10 @@ def get_register_page(request):
 def get_login_page(request):
     return render(request, "login.html")
 
+
 def get_create_project_page(request):
-    return render(request,"project.html")
+    return render(request, "project.html")
+
 
 class SingUpView(CreateAPIView):
     serializer_class = RegistrationSerializer
