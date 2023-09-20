@@ -17,12 +17,11 @@ function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectU
   $.ajax({
     url: url,
     method: "POST",
-    dataType:"application/json",
+    dataType:"json",
     headers: { 'X-CSRFToken': csrfToken,"Authorization": "Token " + token },
     data: resultData,
     success: callback,
     error: function(reason, xhr) {
-
           showMessage(reason.responseText, "red");
     }
   });
@@ -32,6 +31,5 @@ function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectU
 
 $("#add-project").on("click",function(){
     $('.modal').modal('show')
-
 })
 

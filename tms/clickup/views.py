@@ -1,6 +1,5 @@
-from django.contrib.auth import logout
-from django.contrib.auth.models import Group
-from django.views.generic import  ListView
+from django.contrib.auth import login, logout
+from django.contrib.auth.models import Group, User
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, AllowAny
@@ -8,18 +7,21 @@ from clickup.serializer import RegistrationSerializer, LoginSerializer, ProjectS
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from clickup.models import Project, Task
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from clickup import constant
 from rest_framework.views import APIView
 
 
+class HomeView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'home.html'
 
-def home_view(request):
-    context = {}
-    if request.user.is_authenticated:
-        context['username'] = request.user.username
-    return render(request, 'home.html', context)
+    def get(self, request):
+        queryset = User.objects.all()
+        return Response({'request': request, "queryset": queryset})
+
 
 def get_register_page(request):
     group = Group.objects.all()
@@ -58,6 +60,7 @@ class LoginView(ObtainAuthToken):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
+        login(request, user)
         token, created = Token.objects.get_or_create(user=user)
         context = {
             "token": token.key,
@@ -77,6 +80,7 @@ class LogoutView(APIView):
         if request.user.is_authenticated:
             token = request.user.auth_token
             token.delete()
+            logout(request)
             context = {
                 "status": "success",
                 "success_message": constant.LOGOUT_MESSAGE,
@@ -89,6 +93,13 @@ class ProjectCreateView(ListCreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [DjangoModelPermissions]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            context = {"data": serializer.data, "status": "success", "success_message": "Successfully create project"}
+            return Response(context, status=status.HTTP_201_CREATED)
 
 
 class ProjectRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):

@@ -13,13 +13,11 @@ $("#logout").on("click",function(event){
          var redirectURL = homeURL
          var resultData = {}
          var token = localStorage.getItem("token");
-
          var callback = function(response){
-
             showMessage(response.success_message, "green");
-                                setTimeout(function () {
-                                    window.location.href = redirectURL;
-                                });
+                setTimeout(function() {
+                  window.location.href = redirectURL;
+                }, 3000)
          }
          postTokenAjaxCall(logoutURL, csrfToken, token, callback, resultData, redirectURL)
 })
