@@ -28,7 +28,6 @@ function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectU
 }
 
 
-
 $("#add-project").on("click",function(){
     $('.modal').modal('show')
 })

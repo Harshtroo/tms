@@ -102,7 +102,7 @@ class ProjectCreateView(ListCreateAPIView):
             return Response(context, status=status.HTTP_201_CREATED)
 
 
-class ProjectRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+class ProjectView(RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated, DjangoModelPermissions]
