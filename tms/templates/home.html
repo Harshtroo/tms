@@ -9,35 +9,45 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
 
 {% if request.user.groups.first.name == "Admin" %}
-    <button type="button" class="btn btn-secondary" data-icon="plus" id="add-project" > Add Project </button>
+<button type="button" class="btn btn-secondary" data-icon="plus" id="add-project"> Add Project</button>
 {% else %}
 {% endif %}
+
+<hr class="line">
+<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+        aria-expanded="false">Project List
+</button>
+
+<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li><a class="dropdown-item" href="#">First action</a></li>
+</ul>
+
 
 <!--This is create project modal -->
 
 <div class="modal" tabindex="-1">
-  <div class="modal-dialog modal-lg container">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Project</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <div class="mt-2">
-              <label data-error="wrong" data-success="right" for="orangeForm-name" >Project name</label>
-              <input type="text" id="project_name" class="form-control validate">
-          </div>
-          <div class="mt-4">
-              <label data-error="wrong" data-success="right" >Description</label>
-              <textarea id="summernote"></textarea>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" id="create_project">Save</button>
-      </div>
+    <div class="modal-dialog modal-lg container">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2">
+                    <label data-error="wrong" data-success="right" for="orangeForm-name">Project name</label>
+                    <input type="text" id="project_name" class="form-control validate">
+                </div>
+                <div class="mt-4">
+                    <label data-error="wrong" data-success="right">Description</label>
+                    <textarea id="summernote"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="create_project">Save</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script src="{% static 'js/base.js' %}"></script>

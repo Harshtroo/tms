@@ -1,4 +1,16 @@
 
+function getAjaxCall(url,data){
+    $.ajax({
+        url:url,
+        method:"GET",
+        success: data,
+        error: function(xhr,status, error){
+            console.log(error)
+        }
+    })
+}
+
+
 function postAjaxCall(url, csrfToken, resultData, callback) {
   $.ajax({
     url: url,
