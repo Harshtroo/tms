@@ -37,9 +37,7 @@ $("#create_project").on("click",function(event){
 $("#dropdownMenuButton1").on("click",function(){
       var url = projectURL
       getAjaxCall(url,function(data){
-            console.log("data-----------------",data)
             var projectDict  = jQuery.map(data,function(val){
-                console.log("val--------------",val)
                 return val
             })
             var dropdownMenu = $(".dropdown-menu");
@@ -47,6 +45,7 @@ $("#dropdownMenuButton1").on("click",function(){
             for (var i = 0; i < projectDict.length; i++) {
                 var projectName = projectDict[i].name;
                 console.log("Project Name:", projectName);
+
                 var listItem = $("<li>").append($("<a>").addClass("dropdown-item").attr("href", "#").text(projectName));
                 dropdownMenu.append(listItem);
 
