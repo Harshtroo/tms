@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login
 from clickup import constant
 from clickup.models import Project, Task
 from django_summernote.fields import SummernoteTextField
