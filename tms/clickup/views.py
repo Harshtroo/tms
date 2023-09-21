@@ -19,7 +19,7 @@ class HomeView(APIView):
     template_name = 'home.html'
 
     def get(self, request):
-        queryset = User.objects.all()
+        queryset = User.objects.filter(is_active=True)
         return Response({'request': request, "queryset": queryset})
 
 
@@ -89,7 +89,7 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
-class ProjectCreateView(ListCreateAPIView):
+class ProjectAPIView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [DjangoModelPermissions]
@@ -98,15 +98,8 @@ class ProjectCreateView(ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            context = {"data": serializer.data, "status": "success", "success_message": "Successfully create project"}
+            context = {"data": serializer.data, "success_message": constant.CREATE_PROJECT_SUCCESS}
             return Response(context, status=status.HTTP_201_CREATED)
-
-
-class ProjectView(RetrieveUpdateDestroyAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
-
 
 class TaskCreateView(ListCreateAPIView):
     queryset = Task.objects.all()

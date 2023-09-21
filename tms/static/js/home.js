@@ -6,7 +6,7 @@ $(document).ready(function() {
 });
 
 var content = $('#summernote').summernote('code');
-var homeURL = "http://127.0.0.1:8000/"
+var homeURL = ""
 var projectURL = "/create_project/"
 
 var showMessage = function (message, color) {
