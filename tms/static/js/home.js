@@ -1,4 +1,6 @@
 
+
+
 $(document).ready(function() {
    $('#summernote').summernote();
    height: 200;
@@ -33,34 +35,39 @@ $("#create_project").on("click",function(event){
 })
 
 
+var selectorBlock = false;
 
-$("#dropdownMenuButton1").on("click",function(){
+$("#selector").on("click",function(){
+    if (selectorBlock) {
+        return
+    }
       var url = projectURL
       getAjaxCall(url,function(data){
-            var projectDict  = jQuery.map(data,function(val){
+            var projectDict  = jQuery.map(data.results,function(val){
                 return val
             })
-            var dropdownMenu = $(".dropdown-menu");
-            dropdownMenu.empty();
+
             for (var i = 0; i < projectDict.length; i++) {
                 var projectName = projectDict[i].name;
-                console.log("Project Name:", projectName);
 
-                var listItem = $("<li>").append($("<a>").addClass("dropdown-item").attr("href", "#").text(projectName));
-                dropdownMenu.append(listItem);
-
+                var ulTag = $(".project-list")
+                var linkTag = `<li><a href='#'>${projectName}</a></li>`
+                ulTag.append(linkTag);
             }
-
       })
-
+selectorBlock = true;
 })
 
 
 
-//const dropdownButton = document.getElementById('dropdownMenuButton1');
-//const dropdownMenu = document.querySelector('.dropdown-menu');
-//
-//dropdownButton.addEventListener('click', function() {
-//  dropdownMenu.classList.toggle('show');
-//
-//});
+$("ul").on("click", ".init", function() {
+    $(this).closest("ul").children('li:not(.init)').toggle();
+});
+
+var allOptions = $("ul").children('li:not(.init)');
+$("ul").on("click", "li:not(.init)", function() {
+    allOptions.removeClass('selected');
+    $(this).addClass('selected');
+
+    allOptions.toggle();
+});

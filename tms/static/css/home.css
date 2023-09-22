@@ -31,4 +31,46 @@
 }
 
 
+ul.project-list {
+    background: white;
+    list-style: none;
+    padding: 0px 10px 0px 50px;
+    position: absolute;
+    height: 56px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 600;
+    color: black;
+    border: 1px solid black;
+    width: 200px;
+    border-radius: 50px;
+    margin-left:4%;
+    margin-top:2%
+}
+
+ul li {
+  padding:  20px; z-index: 2;
+  margin-left: -21px;
+}
+
+ul li:not(.init) {
+    float: left;
+    padding: 10px;
+    width: 100%;
+    display: none;
+    background: #F5F5F5;
+    color: #fff;
+    position: relative;
+    left: 4px;
+}
+ul li:not(.init):hover, ul li.selected:not(.init) { background: grey; color: grey; }
+li.init { cursor: pointer; }
+
+
+
+
+
+
 
