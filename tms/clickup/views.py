@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 
 class HomeView(APIView):
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'home1.html'
+    template_name = 'home.html'
 
     def get(self, request):
         queryset = User.objects.filter(is_active=True)

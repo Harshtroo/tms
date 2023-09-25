@@ -1,6 +1,4 @@
 
-
-
 $(document).ready(function() {
    $('#summernote').summernote();
    height: 200;
@@ -15,6 +13,8 @@ var showMessage = function (message, color) {
         var messageElement = $("<div>").text(message).css("color", color);
         $("#message-container").html(messageElement);
     };
+
+/* this code for create project */
 
 $("#create_project").on("click",function(event){
     event.preventDefault()
@@ -35,39 +35,44 @@ $("#create_project").on("click",function(event){
 })
 
 
-var selectorBlock = false;
+/* this code project list show */
 
 $("#selector").on("click",function(){
-    if (selectorBlock) {
-        return
-    }
+      var table = document.getElementById("table")
       var url = projectURL
+
       getAjaxCall(url,function(data){
             var projectDict  = jQuery.map(data.results,function(val){
                 return val
             })
 
+            var tbody = document.getElementsByTagName("tbody")
+            var tableHTML = `
+              <table class="table justify-content-center">
+                <thead>
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Project name</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
             for (var i = 0; i < projectDict.length; i++) {
                 var projectName = projectDict[i].name;
-
-                var ulTag = $(".project-list")
-                var linkTag = `<li><a href='#'>${projectName}</a></li>`
-                ulTag.append(linkTag);
-            }
+                tableHTML += `
+                    <tr>
+                      <td>${i + 1}</td>
+                      <td>${projectName}</td>
+                    </tr>
+                  `;
+                }
+                tableHTML += `
+                    </tbody>
+                  </table>
+                `;
+                table.innerHTML = tableHTML;
       })
-selectorBlock = true;
+
 })
 
 
-
-$("ul").on("click", ".init", function() {
-    $(this).closest("ul").children('li:not(.init)').toggle();
-});
-
-var allOptions = $("ul").children('li:not(.init)');
-$("ul").on("click", "li:not(.init)", function() {
-    allOptions.removeClass('selected');
-    $(this).addClass('selected');
-
-    allOptions.toggle();
-});

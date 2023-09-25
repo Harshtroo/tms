@@ -9,29 +9,19 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
 
 
+<nav class="project-nav">
+    <ul>
+        {% if request.user.groups.first.name == "Admin" or request.user.groups.first.name == "Project Manager" %}
+        <li id="add-project" ><a >Create Project</a></li>
+        {% else %}
+        {% endif %}
+        <li id="selector">Project List</li>
+        <li>Create Task</li>
+        <li>Contact</li>
+    </ul>
+</nav>
 
-
-
-
-
-
-
-
-{% if request.user.groups.first.name == "Admin" %}
-<button type="button" class="btn btn-secondary" data-icon="plus" id="add-project"> Add Project</button>
-{% else %}
-{% endif %}
-
-
-
-
-<hr class="line">
-
-<div>
-   <ul class="list-unstyled project-list">
-    <li class="init" id="selector">Project List</li>
-</ul>
-</div>
+<div id="table"></div>
 
 
 <!--This is create project modal -->
@@ -60,6 +50,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="{% static 'js/base.js' %}"></script>
 <script src="{% static 'js/home.js' %}"></script>

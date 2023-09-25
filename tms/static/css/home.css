@@ -14,63 +14,38 @@
 
 
 
-.dropdown-menu {
-  .dropdown-toggle {
-    &::before,
-    &::after {
-      position: absolute;
-      top: 0.85em;
-    }
-    &::before {
-      left: 0.255em;
-    }
-    &::after {
-      right: 0.255em;
-    }
-  }
+/* add vertical nav bar css*/
+ .project-nav {
+         position:fixed;
+         width: 200px;
+         height: 100%;
+         background-color: #333;
+         float: left;
+         height:200px;
+
+      }
+      ul {
+         list-style-type: none;
+         margin: 0;
+         padding: 0;
+
+      }
+      li {
+         display: block;
+         color: white;
+         text-align: center;
+         padding: 14px 16px;
+         text-decoration: none;
+         background-color: #111;
+
+      }
+
+/* project list css */
+
+.table{
+    margin-top:10%;
+    margin-left:25%;
+    width:60%;
 }
-
-
-ul.project-list {
-    background: white;
-    list-style: none;
-    padding: 0px 10px 0px 50px;
-    position: absolute;
-    height: 56px;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 16px;
-    line-height: 1;
-    font-weight: 600;
-    color: black;
-    border: 1px solid black;
-    width: 200px;
-    border-radius: 50px;
-    margin-left:4%;
-    margin-top:2%
-}
-
-ul li {
-  padding:  20px; z-index: 2;
-  margin-left: -21px;
-}
-
-ul li:not(.init) {
-    float: left;
-    padding: 10px;
-    width: 100%;
-    display: none;
-    background: #F5F5F5;
-    color: #fff;
-    position: relative;
-    left: 4px;
-}
-ul li:not(.init):hover, ul li.selected:not(.init) { background: grey; color: grey; }
-li.init { cursor: pointer; }
-
-
-
-
-
 
 
