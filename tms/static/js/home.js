@@ -41,6 +41,7 @@ $("#selector").on("click",function(){
       var url = projectURL
 
       getAjaxCall(url,function(data){
+
             var projectDict  = jQuery.map(data.results,function(val){
                 return val
             })
@@ -58,8 +59,10 @@ $("#selector").on("click",function(){
             `;
             for (var project_no = 0; project_no < projectDict.length; project_no++) {
                 var projectName = projectDict[project_no].name;
+
                 tableHTML += `
                     <tr>
+                      {{id}}
                       <td>${project_no + 1}</td>
                       <td>${projectName}</td>
                     </tr>
@@ -71,7 +74,6 @@ $("#selector").on("click",function(){
                 `;
                 table.innerHTML = tableHTML;
       })
-
 })
 
 
