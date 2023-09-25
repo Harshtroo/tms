@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
    $('#summernote').summernote();
    height: 200;
@@ -57,11 +56,11 @@ $("#selector").on("click",function(){
                 </thead>
                 <tbody>
             `;
-            for (var i = 0; i < projectDict.length; i++) {
-                var projectName = projectDict[i].name;
+            for (var project_no = 0; project_no < projectDict.length; project_no++) {
+                var projectName = projectDict[project_no].name;
                 tableHTML += `
                     <tr>
-                      <td>${i + 1}</td>
+                      <td>${project_no + 1}</td>
                       <td>${projectName}</td>
                     </tr>
                   `;
