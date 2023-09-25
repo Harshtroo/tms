@@ -59,21 +59,35 @@ $("#selector").on("click",function(){
             `;
             for (var project_no = 0; project_no < projectDict.length; project_no++) {
                 var projectName = projectDict[project_no].name;
+                var projectId = projectDict[project_no].id
 
                 tableHTML += `
                     <tr>
                       {{id}}
                       <td>${project_no + 1}</td>
                       <td>${projectName}</td>
+                      <td><button type="button" class="btn btn-primary" id="edit-project" value="${projectId}">Primary</button></td>
                     </tr>
                   `;
                 }
+
                 tableHTML += `
                     </tbody>
                   </table>
                 `;
                 table.innerHTML = tableHTML;
-      })
+
+
+                $("#edit-project").on("click",function(){
+
+                    $("#edit-project").val()
+
+                })
+
+            })
 })
+
+
+/* project edit functionality */
 
 
