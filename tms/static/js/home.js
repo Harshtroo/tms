@@ -81,8 +81,9 @@ $("#selector").on("click",function(){
                 table.innerHTML = tableHTML;
 
                 /* edit button functionality */
-                $(".edit-project-btn").on("click",function(){
+                 $(".edit-project-btn").on("click",function(){
                     $('.edit-modal').modal('show');
+                    debugger
                     var projectId = $(this).val()
                     var redirectURL = ""
                     var resultData = {"name": $("#project_name").val(),
@@ -91,6 +92,7 @@ $("#selector").on("click",function(){
                     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
                     var token = localStorage.getItem("token");
                     var callback = function(response){
+
                         showMessage("Project successfully edit", "green");
                             setTimeout(function() {
                               window.location.href = redirectURL;
@@ -98,6 +100,7 @@ $("#selector").on("click",function(){
                     }
                     putAjaxCall(projectEditURL, csrfToken, token, callback, resultData, redirectURL)
                 })
+
 
 
                 /* delete button functionality */
