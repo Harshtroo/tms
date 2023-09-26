@@ -53,6 +53,8 @@ $("#selector").on("click",function(){
                   <tr>
                     <th scope="col">No.</th>
                     <th scope="col">Project name</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -66,28 +68,57 @@ $("#selector").on("click",function(){
                       {{id}}
                       <td>${project_no + 1}</td>
                       <td>${projectName}</td>
-                      <td><button type="button" class="btn btn-primary" id="edit-project" value="${projectId}">Primary</button></td>
+                      <td><button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal" data-bs-target="#project_edit" value="${projectId}">Edit</button></td>
+                      <td><button type="button" class="btn btn-primary delete-project-btn"  value="${projectId}">Delete</button></td>
                     </tr>
-                  `;
+                  `
                 }
 
                 tableHTML += `
                     </tbody>
                   </table>
-                `;
+                `
                 table.innerHTML = tableHTML;
 
-
-                $("#edit-project").on("click",function(){
-
-                    $("#edit-project").val()
-
+                /* edit button functionality */
+                $(".edit-project-btn").on("click",function(){
+                    $('.edit-modal').modal('show');
+                    var projectId = $(this).val()
+                    var redirectURL = ""
+                    var resultData = {"name": $("#project_name").val(),
+                      "description":$("#summernote").val()}
+                    var projectEditURL = "projects/" + projectId +"/"
+                    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+                    var token = localStorage.getItem("token");
+                    var callback = function(response){
+                        showMessage("Project successfully edit", "green");
+                            setTimeout(function() {
+                              window.location.href = redirectURL;
+                            }, 2000)
+                    }
+                    putAjaxCall(projectEditURL, csrfToken, token, callback, resultData, redirectURL)
                 })
 
+
+                /* delete button functionality */
+                $(".delete-project-btn").on("click",function(){
+                    var resultData = $(this).val()
+                    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+                    var projectDeleteURL = "projects/" + resultData +"/"
+                    var redirectURL = homeURL
+                    var token = localStorage.getItem("token");
+                    var callback = function(response){
+                        showMessage("Project deleted successfully", "green");
+                            setTimeout(function() {
+                              window.location.href = redirectURL;
+                            }, 2000)
+                    }
+                    deleteAjaxCall(projectDeleteURL, csrfToken,token, callback, resultData,redirectURL)
+                })
             })
 })
 
 
-/* project edit functionality */
+
 
 

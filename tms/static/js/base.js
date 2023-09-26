@@ -39,8 +39,40 @@ function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectU
   });
 }
 
+/* this function for delete api call*/
+
+
+function deleteAjaxCall(url, csrfToken,token, callback, resultData,redirectURL) {
+  $.ajax({
+    url: url,
+    method: "DELETE",
+    headers: { 'X-CSRFToken': csrfToken, "Authorization": "Token " + token },
+    data: resultData,
+    success: callback,
+    error: function(reason, xhr) {
+          showMessage(reason.responseText, "red");
+    }
+  });
+}
+
+
+
+function putAjaxCall(url, csrfToken, token, callback, resultData, redirectURL) {
+  $.ajax({
+    url: url,
+    method: "PUT",
+    headers: { 'X-CSRFToken': csrfToken, "Authorization": "Token " + token },
+    data: resultData,
+    success: callback,
+    error: function(reason, xhr) {
+          showMessage(reason.responseText, "red");
+    }
+  });
+}
+
+
 
 $("#add-project").on("click",function(){
-    $('.modal').modal('show')
+    $(".modal").modal("show")
 })
 
