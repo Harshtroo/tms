@@ -14,6 +14,9 @@ var showMessage = function (message, color) {
     };
 
 /* this code for create project */
+$("#add-project").on("click",function(){
+    $(".create-project").modal("show")
+})
 
 $("#create_project").on("click",function(event){
     event.preventDefault()
@@ -32,7 +35,6 @@ $("#create_project").on("click",function(event){
      }
     postTokenAjaxCall(projectURL, csrfToken, token, callback, resultData,redirectURL)
 })
-
 
 /* this code project list show */
 
@@ -71,29 +73,45 @@ $("#selector").on("click",function(){
                       <td><button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal" data-bs-target="#project_edit" value="${projectId}">Edit</button></td>
                       <td><button type="button" class="btn btn-primary delete-project-btn"  value="${projectId}">Delete</button></td>
                     </tr>
-                  `
-                }
+                  `;
+            }
 
-                tableHTML += `
-                    </tbody>
-                  </table>
-                `
-                table.innerHTML = tableHTML;
+            tableHTML += `
+                </tbody>
+              </table>
+            `
+            table.innerHTML = tableHTML;
 
-                /* edit button functionality */
-                 $(".edit-project-btn").on("click",function(){
-                    $('.edit-modal').modal('show');
-                    debugger
-                    var projectId = $(this).val()
+            /* edit button functionality */
+             $(".edit-project-btn").on("click",function(){
+                var projectId = $(this).val()
+                var projectEditURL = "projects/" + projectId +"/"
+
+                getAjaxCall(projectEditURL,function(response){
+                     var projectDetails = jQuery.map(data.results,function(project_details){
+                        return project_details
+                     })
+
+                     for (var project_no = 0; project_no < projectDetails.length; project_no++) {
+                         $("#edit-project-name").val(projectDetails[project_no].name);
+                         $("#edit-summernote").val(projectDetails[project_no].description)
+                     }
+                     $(document).ready(function() {
+                           $('#edit-summernote').summernote();
+                           height: 200;
+                           focus: true
+                     });
+                     $('.edit-modal').modal('show');
+                })
+                /* edit save button event handle */
+                $("#edit_project").on("click",function(){
                     var redirectURL = ""
-                    var resultData = {"name": $("#project_name").val(),
-                      "description":$("#summernote").val()}
-                    var projectEditURL = "projects/" + projectId +"/"
+                    var resultData = {"name": $("#edit-project-name").val(),
+                                      "description":$("#edit-summernote").val()}
                     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
                     var token = localStorage.getItem("token");
                     var callback = function(response){
-
-                        showMessage("Project successfully edit", "green");
+                        showMessage("Project successfully Edit", "green");
                             setTimeout(function() {
                               window.location.href = redirectURL;
                             }, 2000)
@@ -101,24 +119,24 @@ $("#selector").on("click",function(){
                     putAjaxCall(projectEditURL, csrfToken, token, callback, resultData, redirectURL)
                 })
 
-
-
-                /* delete button functionality */
-                $(".delete-project-btn").on("click",function(){
-                    var resultData = $(this).val()
-                    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
-                    var projectDeleteURL = "projects/" + resultData +"/"
-                    var redirectURL = homeURL
-                    var token = localStorage.getItem("token");
-                    var callback = function(response){
-                        showMessage("Project deleted successfully", "green");
-                            setTimeout(function() {
-                              window.location.href = redirectURL;
-                            }, 2000)
-                    }
-                    deleteAjaxCall(projectDeleteURL, csrfToken,token, callback, resultData,redirectURL)
-                })
             })
+
+            /* delete button functionality */
+            $(".delete-project-btn").on("click",function(){
+                var resultData = $(this).val()
+                var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+                var projectDeleteURL = "projects/" + resultData +"/"
+                var redirectURL = homeURL
+                var token = localStorage.getItem("token");
+                var callback = function(response){
+                    showMessage("Project deleted successfully", "green");
+                        setTimeout(function() {
+                          window.location.href = redirectURL;
+                        }, 2000)
+                }
+                deleteAjaxCall(projectDeleteURL, csrfToken,token, callback, resultData,redirectURL)
+            })
+      })
 })
 
 

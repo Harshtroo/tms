@@ -72,7 +72,4 @@ function putAjaxCall(url, csrfToken, token, callback, resultData, redirectURL) {
 
 
 
-$("#add-project").on("click",function(){
-    $(".modal").modal("show")
-})
 
