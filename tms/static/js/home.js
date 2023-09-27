@@ -105,6 +105,8 @@ $("#selector").on("click",function(){
                 })
                 /* edit save button event handle */
                 $("#edit_project").on("click",function(){
+
+                    var method = "PATCH"
                     var redirectURL = ""
                     var resultData = {"name": $("#edit-project-name").val(),
                                       "description":$("#edit-summernote").val()}
@@ -112,17 +114,19 @@ $("#selector").on("click",function(){
                     var token = localStorage.getItem("token");
                     var callback = function(response){
                         showMessage("Project successfully Edit", "green");
+                            $('.edit-modal').modal('hide')
                             setTimeout(function() {
                               window.location.href = redirectURL;
                             }, 2000)
                     }
-                    patchAjaxCall(projectEditURL, csrfToken, token, callback, resultData, redirectURL)
+                    patchDeleteAjaxCall(projectEditURL, method, csrfToken, token, callback, resultData, redirectURL)
                 })
 
             })
 
             /* delete button functionality */
             $(".delete-project-btn").on("click",function(){
+                var method = "DELETE"
                 var resultData = $(this).val()
                 var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
                 var projectDeleteURL = "projects/" + resultData +"/"
@@ -134,7 +138,7 @@ $("#selector").on("click",function(){
                           window.location.href = redirectURL;
                         }, 2000)
                 }
-                deleteAjaxCall(projectDeleteURL, csrfToken,token, callback, resultData,redirectURL)
+                patchDeleteAjaxCall(projectDeleteURL, method, csrfToken,token, callback, resultData,redirectURL)
             })
       })
 })

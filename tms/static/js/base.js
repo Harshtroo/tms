@@ -39,28 +39,11 @@ function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectU
   });
 }
 
-/* this function for delete api call*/
-
-
-function deleteAjaxCall(url, csrfToken,token, callback, resultData,redirectURL) {
+/* this function for edit and delete api call*/
+function patchDeleteAjaxCall(url, method, csrfToken, token, callback, resultData, redirectURL) {
   $.ajax({
     url: url,
-    method: "DELETE",
-    headers: { 'X-CSRFToken': csrfToken, "Authorization": "Token " + token },
-    data: resultData,
-    success: callback,
-    error: function(reason, xhr) {
-          showMessage(reason.responseText, "red");
-    }
-  });
-}
-
-
-
-function patchAjaxCall(url, csrfToken, token, callback, resultData, redirectURL) {
-  $.ajax({
-    url: url,
-    method: "PATCH",
+    method: method,
     headers: { 'X-CSRFToken': csrfToken, "Authorization": "Token " + token },
     data: resultData,
     success: callback,
