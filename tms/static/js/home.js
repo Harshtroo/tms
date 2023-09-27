@@ -116,7 +116,7 @@ $("#selector").on("click",function(){
                               window.location.href = redirectURL;
                             }, 2000)
                     }
-                    putAjaxCall(projectEditURL, csrfToken, token, callback, resultData, redirectURL)
+                    patchAjaxCall(projectEditURL, csrfToken, token, callback, resultData, redirectURL)
                 })
 
             })

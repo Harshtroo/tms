@@ -57,10 +57,10 @@ function deleteAjaxCall(url, csrfToken,token, callback, resultData,redirectURL) 
 
 
 
-function putAjaxCall(url, csrfToken, token, callback, resultData, redirectURL) {
+function patchAjaxCall(url, csrfToken, token, callback, resultData, redirectURL) {
   $.ajax({
     url: url,
-    method: "PUT",
+    method: "PATCH",
     headers: { 'X-CSRFToken': csrfToken, "Authorization": "Token " + token },
     data: resultData,
     success: callback,
