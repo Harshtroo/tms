@@ -4,3 +4,11 @@
 .navbar{
     height: 60px;
 }
+.btn{
+    margin-top : 5%;
+    margin-left : 5%;
+}
+
+body{
+    background-color : whitesmoke;
+}

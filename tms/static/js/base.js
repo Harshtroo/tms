@@ -1,31 +1,46 @@
 
-function postAjaxCall(url, csrfToken, resultData,redirectURL) {
+function getAjaxCall(url,data){
+    $.ajax({
+        url:url,
+        method:"GET",
+        success: data,
+        error: function(xhr,status, error){
+            console.log(error)
+        }
+    })
+}
+
+
+function postAjaxCall(url, csrfToken, resultData, callback) {
   $.ajax({
     url: url,
     method: "POST",
     headers: { 'X-CSRFToken': csrfToken },
     data: resultData,
-    success: function(response){
-            callback(response, redirectURL)},
+    success:callback,
     error: function(reason, xhr) {
-          callback({responseText: reason.responseText}, redirectURL)
+        showMessage(reason.responseText, "red");
     }
   });
 }
 
-var callback = function (context,redirectURL){
-    if (context.status == "success") {
-                            showMessage(context.success_message, "green");
-                            setTimeout(function () {
-                                window.location.href = redirectURL;
-                            }, 5000);
-                        } else {
-                            showMessage(context.responseText, "red");
-                        }
+
+function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectURL) {
+  $.ajax({
+    url: url,
+    method: "POST",
+    dataType:"json",
+    headers: { 'X-CSRFToken': csrfToken,"Authorization": "Token " + token },
+    data: resultData,
+    success: callback,
+    error: function(reason, xhr) {
+          showMessage(reason.responseText, "red");
+    }
+  });
 }
 
-var showMessage = function (message, color) {
 
-        var messageElement = $("<div>").text(message).css("color", color);
-        $("#message-container").html(messageElement);
-    };
+$("#add-project").on("click",function(){
+    $('.modal').modal('show')
+})
+

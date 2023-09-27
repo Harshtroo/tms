@@ -1,0 +1,51 @@
+.modal{
+    margin-top : 5%;
+
+}.
+
+
+.line{
+    width: 100%;
+}
+
+.btn{
+    margin-bottom:5%;
+}
+
+
+
+/* add vertical nav bar css*/
+ .project-nav {
+         position:fixed;
+         width: 200px;
+         height: 100%;
+         background-color: #333;
+         float: left;
+         height:200px;
+
+      }
+      ul {
+         list-style-type: none;
+         margin: 0;
+         padding: 0;
+
+      }
+      li {
+         display: block;
+         color: white;
+         text-align: center;
+         padding: 14px 16px;
+         text-decoration: none;
+         background-color: #111;
+
+      }
+
+/* project list css */
+
+.table{
+    margin-top:10%;
+    margin-left:25%;
+    width:60%;
+}
+
+
