@@ -36,9 +36,9 @@ def get_create_project_page(request):
     return render(request, "project.html")
 
 
-class SingUpView(CreateAPIView):
+class SignUpView(CreateAPIView):
     serializer_class = RegistrationSerializer
-    permission_classes = [AllowAny]
+
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -77,16 +77,23 @@ class LoginView(ObtainAuthToken):
 class LogoutView(APIView):
 
     def post(self, request):
-        if request.user.is_authenticated:
-            token = request.user.auth_token
-            token.delete()
-            logout(request)
+        try:
+            if request.user.is_authenticated:
+                token = request.user.auth_token
+                token.delete()
+                logout(request)
+                context = {
+                    "status": "success",
+                    "success_message": constant.LOGOUT_MESSAGE,
+                }
+                return Response(context, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
             context = {
-                "status": "success",
-                "success_message": constant.LOGOUT_MESSAGE,
+                "status": "error",
+                "error_message": str(e),
             }
-            return Response(context, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ProjectAPIView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
