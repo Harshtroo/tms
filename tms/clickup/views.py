@@ -19,8 +19,9 @@ class HomeView(APIView):
     template_name = 'home.html'
 
     def get(self, request):
+        project = Project.objects.all()
         queryset = User.objects.filter(is_active=True)
-        return Response({'request': request, "queryset": queryset})
+        return Response({'request': request, "queryset": queryset, "project": project})
 
 
 def get_register_page(request):
@@ -56,7 +57,9 @@ class SingUpView(CreateAPIView):
 
 
 class LoginView(ObtainAuthToken):
+
     def post(self, request):
+
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
@@ -101,7 +104,15 @@ class ProjectAPIView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
             context = {"data": serializer.data, "success_message": constant.CREATE_PROJECT_SUCCESS}
             return Response(context, status=status.HTTP_201_CREATED)
 
+
 class TaskCreateView(ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [DjangoModelPermissions]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            context = {"data": serializer.data, "success_message": constant.CREATE_TASK_SUCCESS}
+            return Response(context, status=status.HTTP_201_CREATED)

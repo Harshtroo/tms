@@ -51,7 +51,7 @@ $("#selector").on("click",function(){
             var tbody = document.getElementsByTagName("tbody")
             var tableHTML = `
               <table class="table justify-content-center">
-                <thead>
+                <thead>var resultData
                   <tr>
                     <th scope="col">No.</th>
                     <th scope="col">Project name</th>
@@ -143,6 +143,36 @@ $("#selector").on("click",function(){
       })
 })
 
+
+/* create task JS */
+$("#create-task").on("click",function(){
+    $(".create-task").modal("show")
+})
+
+
+$("#task_create").on("click",function(event){
+    event.preventDefault()
+    var createTaskURL = "/create_task/"
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+    var redirectURL = homeURL
+    var resultData = {"project":$("#select_project").val(),
+                       "name":$("#task-name").val(),
+                       "assignee":$("#select_user").val(),
+                       "due_date":$("#due-date").val(),
+                       "priority":$("#select-priority").val(),
+                       "status":$("#select-status").val(),
+                       "description":$("#create-task-summernote").val()}
+    var token = localStorage.getItem("token")
+    var callback = function(response){
+        showMessage(response.success_message, "green");
+                                $(".modal").modal("hide")
+                                setTimeout(function () {
+                                    window.location.href = redirectURL;
+                                }, 2000);
+        }
+    postTokenAjaxCall(createTaskURL, csrfToken, token, callback, resultData, redirectURL)
+
+})
 
 
 
