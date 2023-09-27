@@ -39,8 +39,20 @@ function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectU
   });
 }
 
+/* this function for edit and delete api call*/
+function patchDeleteAjaxCall(url, method, csrfToken, token, callback, resultData, redirectURL) {
+  $.ajax({
+    url: url,
+    method: method,
+    headers: { 'X-CSRFToken': csrfToken, "Authorization": "Token " + token },
+    data: resultData,
+    success: callback,
+    error: function(reason, xhr) {
+          showMessage(reason.responseText, "red");
+    }
+  });
+}
 
-$("#add-project").on("click",function(){
-    $('.modal').modal('show')
-})
+
+
 

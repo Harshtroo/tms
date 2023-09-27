@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% load static %}
 
 {% block content %}
@@ -26,7 +27,7 @@
 
 <!--This is create project modal -->
 
-<div class="modal" tabindex="-1">
+<div class="modal create-project" tabindex="-1">
     <div class="modal-dialog modal-lg container">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,7 +36,7 @@
             </div>
             <div class="modal-body">
                 <div class="mt-2">
-                    <label data-error="wrong" data-success="right" for="orangeForm-name">Project name</label>
+                    <label data-error="wrong" data-success="right" for="project_name">Project name</label>
                     <input type="text" id="project_name" class="form-control validate">
                 </div>
                 <div class="mt-4">
@@ -50,6 +51,39 @@
         </div>
     </div>
 </div>
+
+
+<!-- this modal for edit project -->
+
+
+<div class="modal edit-modal" id="project_edit" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-lg container">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2">
+                    <label data-error="wrong" data-success="right" for="edit-project-name">Project name</label>
+                    <input type="text" id="edit-project-name" class="form-control validate">
+                </div>
+                <div class="mt-4">
+                    <label data-error="wrong" data-success="right">Description</label>
+                    <textarea id="edit-summernote"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="edit_project">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 
 <script src="{% static 'js/base.js' %}"></script>
