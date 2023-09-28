@@ -94,9 +94,9 @@
             <div class="modal-body">
 
                 <div class="mt-2">
-                    <label data-error="wrong" data-success="right" for="project_name">Select Project</label>
+                    <label data-error="wrong" data-success="right" for="project_name">Projects</label>
                     <select  class="form-control validate" id="select_project">
-                        <option>Select Project</option>
+                        <option>select project</option>
                         {% for projects in project %}
                         <option value="{{projects.id}}">{{projects.name}}</option>
                         {% endfor %}
@@ -109,9 +109,9 @@
                 </div>
 
                 <div class="mt-4">
-                    <label data-error="wrong" data-success="right" for="project_name">Select User</label>
+                    <label data-error="wrong" data-success="right" for="project_name">Users</label>
                     <select  class="form-control validate" id="select_user">
-                        <option>Select User</option>
+                        <option>Select user</option>
                         {% for user in queryset %}
                         <option value="{{user.id}}">{{user.username}}</option>
                         {% endfor %}
@@ -124,9 +124,9 @@
                 </div>
 
                 <div class="mt-4">
-                    <label data-error="wrong" data-success="right" for="project_name">Select Priority</label>
+                    <label data-error="wrong" data-success="right" for="project_name">Priority</label>
                     <select  class="form-control validate" id="select-priority">
-                        <option>Select Priority</option>
+                        <option>Select priority</option>
                         <option value="Normal">Normal</option>
                         <option value="Low">Low</option>
                         <option value="High">High</option>
@@ -138,7 +138,7 @@
                 <div class="mt-4">
                     <label data-error="wrong" data-success="right" for="project_name">Select Status</label>
                     <select  class="form-control validate" id="select-status">
-                        <option value="Pending">Pending</option>
+                        <option value="pending" >Pending</option>
                         <option value="in_process">In Process</option>
                         <option value="completed">Completed</option>
 
@@ -154,7 +154,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="task_create">Save</button>
+                <button type="submit" class="btn btn-primary task_create" id="task_create">Save</button>
             </div>
         </div>
     </div>
