@@ -37,7 +37,6 @@ $("#create_project").on("click",function(event){
 })
 
 
-
 /* create task function */
 function createTask(){
     var createTaskURL = "/create_task/"
@@ -94,7 +93,6 @@ $("#selector").on("click",function(){
 
                 tableHTML += `
                     <tr>
-                      {{id}}
                       <td>${project_no + 1}</td>
                       <td>${projectName}</td>
                       <td><p class="btn create-task-btn" value="${projectId}">+</p></td>
@@ -195,4 +193,54 @@ $("#create-task").on("click",function(){
 $("#task_create").on("click",function(event){
     event.preventDefault()
     createTask()
+})
+
+
+/* task list show */
+
+
+$("#task-list").on("click",function(){
+    var table = document.getElementById("task-list-table")
+    var taskListURL = "/create_task/"
+
+    getAjaxCall(taskListURL,function(data){
+        var taskDict  = jQuery.map(data.results,function(val){
+                return val
+        })
+        console.log("task------------",taskDict)
+        var tbody = document.getElementsByTagName("tbody")
+        var tableHTML = `
+              <table class="table justify-content-center">
+                <thead>var resultData
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Project name</th>
+                    <th scope="col">Add Task</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
+        for (var task_no = 0; task_no < taskDict.length; task_no++) {
+            var taskName = taskDict[task_no].name;
+            var assigneeUser = taskDict[task_no].assignee
+            var dueDate = taskDict[task_no].due_date
+            var priority = taskDict[task_no].priority
+            tableHTML += `
+                    <tr>
+                      <td>${task_no + 1}</td>
+                      <td>${taskName}</td>
+                      <td>${assigneeUser}</td>
+                      <td>${dueDate}</td>
+                      <td>${priority}</td>
+                    </tr>
+                  `;
+        }
+        tableHTML += `
+                </tbody>
+              </table>
+            `
+        table.innerHTML = tableHTML;
+    })
 })

@@ -105,7 +105,7 @@ class ProjectAPIView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
             return Response(context, status=status.HTTP_201_CREATED)
 
 
-class TaskCreateView(ListCreateAPIView):
+class TaskCreateView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [DjangoModelPermissions]
