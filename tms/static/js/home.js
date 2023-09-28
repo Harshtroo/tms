@@ -36,6 +36,32 @@ $("#create_project").on("click",function(event){
     postTokenAjaxCall(projectURL, csrfToken, token, callback, resultData,redirectURL)
 })
 
+
+
+/* create task function */
+function createTask(){
+    var createTaskURL = "/create_task/"
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+    var redirectURL = homeURL
+    var resultData = {"project":$("#select_project").val(),
+                       "name":$("#task-name").val(),
+                       "assignee":$("#select_user").val(),
+                       "due_date":$("#due-date").val(),
+                       "priority":$("#select-priority").val(),
+                       "status":$("#select-status").val(),
+                       "description":$("#create-task-summernote").val()}
+    var token = localStorage.getItem("token")
+    var callback = function(response){
+        showMessage(response.success_message, "green");
+                                $(".modal").modal("hide")
+                                setTimeout(function () {
+                                    window.location.href = redirectURL;
+                                }, 2000);
+        }
+    postTokenAjaxCall(createTaskURL, csrfToken, token, callback, resultData, redirectURL)
+}
+
+
 /* this code project list show */
 
 $("#selector").on("click",function(){
@@ -51,10 +77,11 @@ $("#selector").on("click",function(){
             var tbody = document.getElementsByTagName("tbody")
             var tableHTML = `
               <table class="table justify-content-center">
-                <thead>
+                <thead>var resultData
                   <tr>
                     <th scope="col">No.</th>
                     <th scope="col">Project name</th>
+                    <th scope="col">Add Task</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
                   </tr>
@@ -70,6 +97,7 @@ $("#selector").on("click",function(){
                       {{id}}
                       <td>${project_no + 1}</td>
                       <td>${projectName}</td>
+                      <td><p class="btn create-task-btn" value="${projectId}">+</p></td>
                       <td><button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal" data-bs-target="#project_edit" value="${projectId}">Edit</button></td>
                       <td><button type="button" class="btn btn-primary delete-project-btn"  value="${projectId}">Delete</button></td>
                     </tr>
@@ -81,6 +109,16 @@ $("#selector").on("click",function(){
               </table>
             `
             table.innerHTML = tableHTML;
+
+            /* project list in create task*/
+            $(".create-task-btn").on("click",function(){
+                $(document).ready(function() {
+                           $("#create-task-summernote").summernote();
+                           height: 200;
+                           focus: true
+                     });
+                $(".create-task").modal("show")
+            })
 
             /* edit button functionality */
              $(".edit-project-btn").on("click",function(){
@@ -105,7 +143,6 @@ $("#selector").on("click",function(){
                 })
                 /* edit save button event handle */
                 $("#edit_project").on("click",function(){
-
                     var method = "PATCH"
                     var redirectURL = ""
                     var resultData = {"name": $("#edit-project-name").val(),
@@ -144,6 +181,18 @@ $("#selector").on("click",function(){
 })
 
 
+/* create task JS */
+$("#create-task").on("click",function(){
+    $(document).ready(function() {
+           $("#create-task-summernote").summernote();
+           height: 200;
+           focus: true
+    });
+    $(".create-task").modal("show")
+})
 
-
-
+/* nav bar create task */
+$("#task_create").on("click",function(event){
+    event.preventDefault()
+    createTask()
+})
