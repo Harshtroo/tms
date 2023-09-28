@@ -9,7 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
 
-
+{% if request.user.is_authenticated %}
 <nav class="project-nav">
     <ul>
         {% if request.user.groups.first.name == "Admin" or request.user.groups.first.name == "Project Manager" %}
@@ -21,6 +21,8 @@
         <li>Contact</li>
     </ul>
 </nav>
+{% else %}
+{% endif %}
 
 <div id="table"></div>
 
