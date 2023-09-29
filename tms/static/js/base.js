@@ -1,5 +1,6 @@
 
 function getAjaxCall(url,data){
+
     $.ajax({
         url:url,
         method:"GET",

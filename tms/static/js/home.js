@@ -66,116 +66,126 @@ function createTask(){
 $("#selector").on("click",function(){
       var table = document.getElementById("table")
       var url = projectURL
+      var isVisible = table.style.display !== "none";
 
-      getAjaxCall(url,function(data){
+      if (isVisible) {
+        table.style.display = "none"; // Hide the table
+      }else{
+        table.style.display = "block"
 
-            var projectDict  = jQuery.map(data.results,function(val){
-                return val
-            })
+          getAjaxCall(url,function(data){
 
-            var tbody = document.getElementsByTagName("tbody")
-            var tableHTML = `
-              <table class="table justify-content-center">
-                <thead>var resultData
-                  <tr>
-                    <th scope="col">No.</th>
-                    <th scope="col">Project name</th>
-                    <th scope="col">Add Task</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-            `;
-            for (var project_no = 0; project_no < projectDict.length; project_no++) {
-                var projectName = projectDict[project_no].name;
-                var projectId = projectDict[project_no].id
+                var projectDict  = jQuery.map(data.results,function(val){
+                    return val
+                })
+
+                var tbody = document.getElementsByTagName("tbody")
+                var tableHTML = `
+                  <table class="table justify-content-center">
+                    <thead>var resultData
+                      <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Project name</th>
+                        <th scope="col">Add Task</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                `;
+                for (var project_no = 0; project_no < projectDict.length; project_no++) {
+                    var projectName = projectDict[project_no].name;
+                    var projectId = projectDict[project_no].id
+
+                    tableHTML += `
+                        <tr>
+                          <td>${project_no + 1}</td>
+                          <td>${projectName}</td>
+                          <td><p class="btn create-task-btn" value="${projectId}">+</p></td>
+                          <td><button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal" data-bs-target="#project_edit" value="${projectId}">Edit</button></td>
+                          <td><button type="button" class="btn btn-primary delete-project-btn"  value="${projectId}">Delete</button></td>
+                        </tr>
+                      `;
+                }
 
                 tableHTML += `
-                    <tr>
-                      <td>${project_no + 1}</td>
-                      <td>${projectName}</td>
-                      <td><p class="btn create-task-btn" value="${projectId}">+</p></td>
-                      <td><button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal" data-bs-target="#project_edit" value="${projectId}">Edit</button></td>
-                      <td><button type="button" class="btn btn-primary delete-project-btn"  value="${projectId}">Delete</button></td>
-                    </tr>
-                  `;
-            }
+                    </tbody>
+                  </table>
+                `
+                table.innerHTML = tableHTML;
 
-            tableHTML += `
-                </tbody>
-              </table>
-            `
-            table.innerHTML = tableHTML;
-
-            /* project list in create task*/
-            $(".create-task-btn").on("click",function(){
-                $(document).ready(function() {
-                           $("#create-task-summernote").summernote();
-                           height: 200;
-                           focus: true
-                     });
-                $(".create-task").modal("show")
-            })
-
-            /* edit button functionality */
-             $(".edit-project-btn").on("click",function(){
-                var projectId = $(this).val()
-                var projectEditURL = "projects/" + projectId +"/"
-
-                getAjaxCall(projectEditURL,function(response){
-                     var projectDetails = jQuery.map(data.results,function(project_details){
-                        return project_details
-                     })
-
-                     for (var project_no = 0; project_no < projectDetails.length; project_no++) {
-                         $("#edit-project-name").val(projectDetails[project_no].name);
-                         $("#edit-summernote").val(projectDetails[project_no].description)
-                     }
-                     $(document).ready(function() {
-                           $('#edit-summernote').summernote();
-                           height: 200;
-                           focus: true
-                     });
-                     $('.edit-modal').modal('show');
+                /* project list in create task*/
+                $(".create-task-btn").on("click",function(){
+                    $(document).ready(function() {
+                               $("#create-task-summernote").summernote();
+                               height: 200;
+                               focus: true
+                         });
+                    $(".create-task").modal("show")
                 })
-                /* edit save button event handle */
-                $("#edit_project").on("click",function(){
-                    var method = "PATCH"
-                    var redirectURL = ""
-                    var resultData = {"name": $("#edit-project-name").val(),
-                                      "description":$("#edit-summernote").val()}
+
+                /* edit button functionality */
+                 $(".edit-project-btn").on("click",function(){
+
+                    var projectGetId = $(this).val()
+                    var projectEditURL = "projects/" + projectGetId +"/"
+
+                    getAjaxCall(projectEditURL,function(response){
+
+                         var projectDetails = jQuery.map(response,function(project_details){
+                            return project_details
+                         })
+
+                         for (var project_no = 0; project_no < projectDetails.length; project_no++) {
+                             $("#edit-project-name").val(projectDetails[project_no].name);
+                             $("#edit-summernote").val(projectDetails[project_no].description)
+                         }
+                         $(document).ready(function() {
+                               $('#edit-summernote').summernote();
+                               height: 200;
+                               focus: true
+                         });
+                         $('.edit-modal').modal('show');
+                    })
+                    /* edit save button event handle */
+                    $("#edit_project").on("click",function(){
+
+                        var method = "PATCH"
+                        var redirectURL = ""
+                        var resultData = {"name": $("#edit-project-name").val(),
+                                          "description":$("#edit-summernote").val()}
+                        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+                        var token = localStorage.getItem("token");
+                        var callback = function(response){
+                            showMessage("Project successfully Edit", "green");
+                                $('.edit-modal').modal('hide')
+                                setTimeout(function() {
+                                  window.location.href = redirectURL;
+                                }, 2000)
+                        }
+                        patchDeleteAjaxCall(projectEditURL, method, csrfToken, token, callback, resultData, redirectURL)
+                    })
+
+                })
+
+                /* delete button functionality */
+                $(".delete-project-btn").on("click",function(){
+                    var method = "DELETE"
+                    var resultData = $(this).val()
                     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+                    var projectDeleteURL = "projects/" + resultData +"/"
+                    var redirectURL = homeURL
                     var token = localStorage.getItem("token");
                     var callback = function(response){
-                        showMessage("Project successfully Edit", "green");
-                            $('.edit-modal').modal('hide')
+                        showMessage("Project deleted successfully", "green");
                             setTimeout(function() {
                               window.location.href = redirectURL;
                             }, 2000)
                     }
-                    patchDeleteAjaxCall(projectEditURL, method, csrfToken, token, callback, resultData, redirectURL)
+                    patchDeleteAjaxCall(projectDeleteURL, method, csrfToken,token, callback, resultData,redirectURL)
                 })
-
-            })
-
-            /* delete button functionality */
-            $(".delete-project-btn").on("click",function(){
-                var method = "DELETE"
-                var resultData = $(this).val()
-                var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
-                var projectDeleteURL = "projects/" + resultData +"/"
-                var redirectURL = homeURL
-                var token = localStorage.getItem("token");
-                var callback = function(response){
-                    showMessage("Project deleted successfully", "green");
-                        setTimeout(function() {
-                          window.location.href = redirectURL;
-                        }, 2000)
-                }
-                patchDeleteAjaxCall(projectDeleteURL, method, csrfToken,token, callback, resultData,redirectURL)
-            })
-      })
+          })
+      }
 })
 
 
@@ -197,50 +207,79 @@ $("#task_create").on("click",function(event){
 
 
 /* task list show */
+$("#task-list").on("click", function() {
+  var tableContainer = document.getElementById("task-list-table");
+  var taskListURL = "/create_task/";
+  var isVisible = tableContainer.style.display !== "none";
+  if (isVisible) {
+    tableContainer.style.display = "none";
+  } else {
+      tableContainer.style.display = "block";
 
+      getAjaxCall(taskListURL, function(data) {
+        var taskDict = jQuery.map(data.results, function(val) {
+          return val;
+        });
 
-$("#task-list").on("click",function(){
-    var table = document.getElementById("task-list-table")
-    var taskListURL = "/create_task/"
-
-    getAjaxCall(taskListURL,function(data){
-        var taskDict  = jQuery.map(data.results,function(val){
-                return val
-        })
-        console.log("task------------",taskDict)
-        var tbody = document.getElementsByTagName("tbody")
-        var tableHTML = `
-              <table class="table justify-content-center">
-                <thead>var resultData
-                  <tr>
-                    <th scope="col">No.</th>
-                    <th scope="col">Project name</th>
-                    <th scope="col">Add Task</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-            `;
+        var taskGroups = {};
         for (var task_no = 0; task_no < taskDict.length; task_no++) {
-            var taskName = taskDict[task_no].name;
-            var assigneeUser = taskDict[task_no].assignee
-            var dueDate = taskDict[task_no].due_date
-            var priority = taskDict[task_no].priority
-            tableHTML += `
-                    <tr>
-                      <td>${task_no + 1}</td>
-                      <td>${taskName}</td>
-                      <td>${assigneeUser}</td>
-                      <td>${dueDate}</td>
-                      <td>${priority}</td>
-                    </tr>
-                  `;
+          var project = taskDict[task_no].project;
+          if (!taskGroups[project]) {
+            taskGroups[project] = [];
+          }
+          taskGroups[project].push(taskDict[task_no]);
         }
-        tableHTML += `
-                </tbody>
-              </table>
-            `
-        table.innerHTML = tableHTML;
-    })
-})
+
+        tableContainer.innerHTML = "";
+
+        for (var project in taskGroups) {
+          var tasks = taskGroups[project];
+
+          var tableHTML = `
+            <table class="table justify-content-center">
+              <thead>
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Project name</th>
+                  <th scope="col">Task name</th>
+                  <th scope="col">Assignee</th>
+                  <th scope="col">Due date</th>
+                  <th scope="col">Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+          `;
+
+          for (var task_no = 0; task_no < tasks.length; task_no++) {
+            var taskName = tasks[task_no].name;
+            var assigneeUser = tasks[task_no].assignee;
+            var dueDate = tasks[task_no].due_date;
+            var priority = tasks[task_no].priority;
+            var projectName = tasks[task_no].project
+            var dateArr = dueDate.split("-")
+            var formateDate = dateArr[2]+'-'+dateArr[1]+'-'+dateArr[0];
+
+            tableHTML += `
+              <tr>
+                <td>${task_no + 1}</td>
+                <td>${projectName}</td>
+                <td>${taskName}</td>
+                <td>${assigneeUser}</td>
+                <td>${formateDate}</td>
+                <td>${priority}</td>
+              </tr>
+            `;
+          }
+
+          tableHTML += `
+              </tbody>
+            </table>
+          `;
+
+          var tableDiv = document.createElement("div");
+          tableDiv.innerHTML = tableHTML;
+          tableContainer.appendChild(tableDiv);
+        }
+      });
+      }
+});

@@ -118,3 +118,4 @@ class TaskCreateView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
             return Response(context, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
