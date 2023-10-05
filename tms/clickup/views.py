@@ -37,7 +37,7 @@ def get_create_project_page(request):
     return render(request, "project.html")
 
 
-class SingUpView(CreateAPIView):
+class SingUpView(ListCreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
 
@@ -118,4 +118,3 @@ class TaskCreateView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
             return Response(context, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

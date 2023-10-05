@@ -46,7 +46,17 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     description = SummernoteTextField()
+    project_name = serializers.SerializerMethodField()
+    assignee_username = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
-        fields = ["id", "project", "name", "assignee", "due_date", "priority", "status", "description"]
+        fields = ["id", "project", "name", "assignee", "due_date", "priority", "status", "description","project_name","assignee_username"]
+
+    @staticmethod
+    def get_project_name(instance):
+        return instance.project.name
+
+    @staticmethod
+    def get_assignee_username(instance):
+        return instance.assignee.username

@@ -214,72 +214,74 @@ $("#task-list").on("click", function() {
   if (isVisible) {
     tableContainer.style.display = "none";
   } else {
-      tableContainer.style.display = "block";
+    tableContainer.style.display = "block";
 
-      getAjaxCall(taskListURL, function(data) {
-        var taskDict = jQuery.map(data.results, function(val) {
-          return val;
-        });
+    getAjaxCall(taskListURL, function(data) {
+      var taskDict = jQuery.map(data.results, function(val) {
+        return val;
+      });
 
-        var taskGroups = {};
-        for (var task_no = 0; task_no < taskDict.length; task_no++) {
-          var project = taskDict[task_no].project;
-          if (!taskGroups[project]) {
-            taskGroups[project] = [];
-          }
-          taskGroups[project].push(taskDict[task_no]);
+      var taskGroups = {};
+      for (var task_no = 0; task_no < taskDict.length; task_no++) {
+        var project = taskDict[task_no].project;
+        if (!taskGroups[project]) {
+          taskGroups[project] = [];
         }
+        taskGroups[project].push(taskDict[task_no]);
+      }
+      tableContainer.innerHTML = "";
 
-        tableContainer.innerHTML = "";
+      for (var project in taskGroups) {
+        var tasks = taskGroups[project];
 
-        for (var project in taskGroups) {
-          var tasks = taskGroups[project];
-
-          var tableHTML = `
-            <table class="table justify-content-center">
-              <thead>
-                <tr>
-                  <th scope="col">No.</th>
-                  <th scope="col">Project name</th>
-                  <th scope="col">Task name</th>
-                  <th scope="col">Assignee</th>
-                  <th scope="col">Due date</th>
-                  <th scope="col">Priority</th>
-                </tr>
-              </thead>
-              <tbody>
-          `;
-
-          for (var task_no = 0; task_no < tasks.length; task_no++) {
-            var taskName = tasks[task_no].name;
-            var assigneeUser = tasks[task_no].assignee;
-            var dueDate = tasks[task_no].due_date;
-            var priority = tasks[task_no].priority;
-            var projectName = tasks[task_no].project
-            var dateArr = dueDate.split("-")
-            var formateDate = dateArr[2]+'-'+dateArr[1]+'-'+dateArr[0];
-
-            tableHTML += `
+        var tableHTML = `
+          <table class="table justify-content-center">
+            <thead>
               <tr>
-                <td>${task_no + 1}</td>
-                <td>${projectName}</td>
-                <td>${taskName}</td>
-                <td>${assigneeUser}</td>
-                <td>${formateDate}</td>
-                <td>${priority}</td>
+                <th scope="col">No.</th>
+                <th scope="col">Project name</th>
+                <th scope="col">Task name</th>
+                <th scope="col">Assignee</th>
+                <th scope="col">Due date</th>
+                <th scope="col">Priority</th>
+                <th scope="col"></th>
               </tr>
-            `;
-          }
+            </thead>
+            <tbody>
+        `;
+
+        for (var task_no = 0; task_no < tasks.length; task_no++) {
+          var task = tasks[task_no];
+          var taskName = task.name;
+          var taskId = task.id
+          var assigneeId = task.assignee_username;
+          var dueDate = task.due_date;
+          var priority = task.priority;
+          var projectName = task.project_name
+          var dateArr = dueDate.split("-")
+          var formateDate = dateArr[2]+'-'+dateArr[1]+'-'+dateArr[0];
 
           tableHTML += `
-              </tbody>
-            </table>
+            <tr>
+              <td>${task_no + 1}</td>
+              <td id="project-name-${task_no}">${projectName}</td>
+              <td>${taskName}</td>
+              <td>${assigneeId}</td>
+              <td>${formateDate}</td>
+              <td>${priority}</td>
+              <td><i class="fas fa-edit" style="color: red;"></i></td>
+            </tr>
           `;
-
-          var tableDiv = document.createElement("div");
-          tableDiv.innerHTML = tableHTML;
-          tableContainer.appendChild(tableDiv);
         }
-      });
+
+        tableHTML += `
+          </tbody>
+        </table>
+        `;
+        var tableDiv = document.createElement("div");
+        tableDiv.innerHTML = tableHTML;
+        tableContainer.appendChild(tableDiv);
       }
+    });
+  }
 });
