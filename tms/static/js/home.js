@@ -224,6 +224,7 @@ $("#task-list").on("click", function() {
       var taskGroups = {};
       for (var task_no = 0; task_no < taskDict.length; task_no++) {
         var project = taskDict[task_no].project;
+        debugger
         if (!taskGroups[project]) {
           taskGroups[project] = [];
         }
@@ -233,7 +234,6 @@ $("#task-list").on("click", function() {
 
       for (var project in taskGroups) {
         var tasks = taskGroups[project];
-
         var tableHTML = `
           <table class="table justify-content-center">
             <thead>
@@ -269,7 +269,7 @@ $("#task-list").on("click", function() {
               <td>${assigneeId}</td>
               <td>${formateDate}</td>
               <td>${priority}</td>
-              <td><i class="fas fa-edit" style="color: red;"></i></td>
+              <td><button class="edit-task-btn" data-task-id="${taskId}" style="background: none; border: none;"><i class="fas fa-edit" style="color: red;"></i></button></td>
             </tr>
           `;
         }
