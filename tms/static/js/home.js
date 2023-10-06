@@ -11,10 +11,11 @@ var projectURL = "/create_project/"
 var showMessage = function (message, color) {
         var messageElement = $("<div>").text(message).css("color", color);
         $("#message-container").html(messageElement);
-    };
+
+};
 
 /* this code for create project */
-$("#add-project").on("click",function(){
+$("#create-project-btn").on("click",function(){
     $(".create-project").modal("show")
 })
 
@@ -24,15 +25,33 @@ $("#create_project").on("click",function(event){
     var redirectURL = homeURL
     var resultData = {"name": $("#project_name").val(),
                       "description":$("#summernote").val()}
-
     var token = localStorage.getItem("token")
     var callback = function(response){
         showMessage(response.success_message, "green");
-                                $(".modal").modal("hide")
-                                setTimeout(function () {
-                                    window.location.href = redirectURL;
-                                }, 2000);
-     }
+        $(".modal").modal("hide")
+        var trTag = document.getElementById("project-tr")
+        $("#message-container").fadeIn()
+        setTimeout(function() {
+            $("#message-container").fadeOut();
+        }, 2000);
+        const tableBodyRowCount = $("#project-table-body tr").length
+        var newRow =
+         `
+        <tr>
+            <td>${tableBodyRowCount + 1}</td>
+            <td>${response.data.name}</td>
+            <td><p class="btn create-task-btn" value="${response.data.id}" >+</p></td>
+            <td>
+                <button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal" data-bs-target="#project_edit" value="${response.data.id}">Edit
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary delete-project-btn" value="${response.data.id}">Delete</button>
+            </td>
+        </tr>
+         `
+        $("#project-table-body").append(newRow)
+    };
     postTokenAjaxCall(projectURL, csrfToken, token, callback, resultData,redirectURL)
 })
 
@@ -63,59 +82,27 @@ function createTask(){
 
 /* this code project list show */
 
+var table = $("#project-table")
+var createProjectButton = $("#create-project-btn")
+table.hide()
+createProjectButton.hide()
 $("#selector").on("click",function(){
-      var table = document.getElementById("table")
-      var url = projectURL
-      var isVisible = table.style.display !== "none";
 
-      if (isVisible) {
-        table.style.display = "none"; // Hide the table
+      /* create project button */
+
+      var url = projectURL
+
+      if (table.is(":visible")) {
+        table.hide();
+        createProjectButton.hide();
       }else{
-        table.style.display = "block"
+        table.show();
+        createProjectButton.show();
 
           getAjaxCall(url,function(data){
-
-                var projectDict  = jQuery.map(data.results,function(val){
-                    return val
-                })
-
-                var tbody = document.getElementsByTagName("tbody")
-                var tableHTML = `
-                  <table class="table justify-content-center">
-                    <thead>var resultData
-                      <tr>
-                        <th scope="col">No.</th>
-                        <th scope="col">Project name</th>
-                        <th scope="col">Add Task</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                `;
-                for (var project_no = 0; project_no < projectDict.length; project_no++) {
-                    var projectName = projectDict[project_no].name;
-                    var projectId = projectDict[project_no].id
-
-                    tableHTML += `
-                        <tr>
-                          <td>${project_no + 1}</td>
-                          <td>${projectName}</td>
-                          <td><p class="btn create-task-btn" value="${projectId}">+</p></td>
-                          <td><button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal" data-bs-target="#project_edit" value="${projectId}">Edit</button></td>
-                          <td><button type="button" class="btn btn-primary delete-project-btn"  value="${projectId}">Delete</button></td>
-                        </tr>
-                      `;
-                }
-
-                tableHTML += `
-                    </tbody>
-                  </table>
-                `
-                table.innerHTML = tableHTML;
-
                 /* project list in create task*/
                 $(".create-task-btn").on("click",function(){
+
                     $(document).ready(function() {
                                $("#create-task-summernote").summernote();
                                height: 200;
@@ -159,13 +146,13 @@ $("#selector").on("click",function(){
                         var callback = function(response){
                             showMessage("Project successfully Edit", "green");
                                 $('.edit-modal').modal('hide')
+                                $("#message-container").fadeIn()
                                 setTimeout(function() {
-                                  window.location.href = redirectURL;
-                                }, 2000)
+                                    $("#message-container").fadeOut();
+                                }, 2000);
                         }
                         patchDeleteAjaxCall(projectEditURL, method, csrfToken, token, callback, resultData, redirectURL)
                     })
-
                 })
 
                 /* delete button functionality */
@@ -185,6 +172,7 @@ $("#selector").on("click",function(){
                     patchDeleteAjaxCall(projectDeleteURL, method, csrfToken,token, callback, resultData,redirectURL)
                 })
           })
+
       }
 })
 
@@ -224,7 +212,6 @@ $("#task-list").on("click", function() {
       var taskGroups = {};
       for (var task_no = 0; task_no < taskDict.length; task_no++) {
         var project = taskDict[task_no].project;
-        debugger
         if (!taskGroups[project]) {
           taskGroups[project] = [];
         }
@@ -269,7 +256,19 @@ $("#task-list").on("click", function() {
               <td>${assigneeId}</td>
               <td>${formateDate}</td>
               <td>${priority}</td>
-              <td><button class="edit-task-btn" data-task-id="${taskId}" style="background: none; border: none;"><i class="fas fa-edit" style="color: red;"></i></button></td>
+              <td>
+                <button class="edit-task-btn" value="${taskId}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                    </svg>
+                </button>
+              </td>
+              <td>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                </svg>
+              </td>
             </tr>
           `;
         }
@@ -281,7 +280,20 @@ $("#task-list").on("click", function() {
         var tableDiv = document.createElement("div");
         tableDiv.innerHTML = tableHTML;
         tableContainer.appendChild(tableDiv);
+
+        /* task edit functionality.*/
       }
+        $(".edit-task-btn").on("click",function(){
+            var editButtonVal = $(this).val()
+            var taskGetURL = "/create_task/" + editButtonVal + "/"
+            getAjaxCall(taskGetURL,function(data){
+                debugger
+            })
+
+        })
     });
   }
 });
+
+
+

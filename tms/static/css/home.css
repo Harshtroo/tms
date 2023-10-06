@@ -43,9 +43,12 @@
 /* project list css */
 
 .table{
-    margin-top:5%;
+
     margin-left:25%;
     width:60%;
 }
 
+#create-project-btn{
+    margin-left: 80%;
 
+}

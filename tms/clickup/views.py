@@ -19,9 +19,10 @@ class HomeView(APIView):
     template_name = 'home.html'
 
     def get(self, request):
-        project = Project.objects.all()
+        projects = Project.objects.all()
         queryset = User.objects.filter(is_active=True)
-        return Response({'request': request, "queryset": queryset, "project": project})
+
+        return Response({'request': request, "queryset": queryset, "projects": projects})
 
 
 def get_register_page(request):

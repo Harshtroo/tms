@@ -13,7 +13,7 @@
 <nav class="project-nav">
     <ul>
         {% if request.user.groups.first.name == "Admin" or request.user.groups.first.name == "Project Manager" %}
-        <li id="add-project" ><a >Create Project</a></li>
+        <li id="add-project"><a>Create Project</a></li>
         {% else %}
         {% endif %}
         <li id="selector">Project List</li>
@@ -25,6 +25,37 @@
 {% endif %}
 
 <div id="table"></div>
+
+<!--This is  project list table  -->
+<table class="table justify-content-center" id="project-table">
+    <button type="button" class="btn btn-dark" id="create-project-btn">create Project</button>
+    <thead>
+    <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Project name</th>
+        <th scope="col">Add Task</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody id="project-table-body">
+    {% for pj in projects %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{pj.name}}</td>
+        <td><p class="btn create-task-btn" value="{{pj.pk}}">+</p></td>
+        <td>
+            <button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal"
+                    data-bs-target="#project_edit" value="{{pj.pk}}">Edit
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-primary delete-project-btn" value="{{pj.pk}}">Delete</button>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
 
 <!--This is create project modal -->
@@ -58,7 +89,7 @@
 <!-- this modal for edit project -->
 
 
-<div class="modal edit-modal" id="project_edit" tabindex="-1"  aria-hidden="true">
+<div class="modal edit-modal" id="project_edit" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg container">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,9 +128,9 @@
 
                 <div class="mt-2">
                     <label data-error="wrong" data-success="right" for="project_name">Projects</label>
-                    <select  class="form-control validate" id="select_project">
+                    <select class="form-control validate" id="select_project">
                         <option>select project</option>
-                        {% for projects in project %}
+                        {% for projects in projects %}
                         <option value="{{projects.id}}">{{projects.name}}</option>
                         {% endfor %}
                     </select>
@@ -112,7 +143,7 @@
 
                 <div class="mt-4">
                     <label data-error="wrong" data-success="right" for="project_name">Users</label>
-                    <select  class="form-control validate" id="select_user">
+                    <select class="form-control validate" id="select_user">
                         <option>Select user</option>
                         {% for user in queryset %}
                         <option value="{{user.id}}">{{user.username}}</option>
@@ -121,13 +152,13 @@
                 </div>
 
                 <div class="mt-4">
-                     <label data-error="wrong" data-success="right" for="project_name">Due Date</label>
-                     <input id="due-date" class="form-control" type="date" />
+                    <label data-error="wrong" data-success="right" for="project_name">Due Date</label>
+                    <input id="due-date" class="form-control" type="date"/>
                 </div>
 
                 <div class="mt-4">
                     <label data-error="wrong" data-success="right" for="project_name">Priority</label>
-                    <select  class="form-control validate" id="select-priority">
+                    <select class="form-control validate" id="select-priority">
                         <option>Select priority</option>
                         <option value="Normal">Normal</option>
                         <option value="Low">Low</option>
@@ -139,14 +170,14 @@
 
                 <div class="mt-4">
                     <label data-error="wrong" data-success="right" for="project_name">Select Status</label>
-                    <select  class="form-control validate" id="select-status">
-                        <option value="pending" >Pending</option>
+                    <select class="form-control validate" id="select-status">
+                        <option value="pending">Pending</option>
                         <option value="in_process">In Process</option>
                         <option value="completed">Completed</option>
 
                     </select>
 
-                 </div>
+                </div>
 
                 <div class="mt-4">
                     <label data-error="wrong" data-success="right">Description</label>
@@ -165,7 +196,6 @@
 <!-- this modal for create task -->
 
 <div id="task-list-table"></div>
-
 
 
 <script src="{% static 'js/base.js' %}"></script>
