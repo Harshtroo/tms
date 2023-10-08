@@ -39,18 +39,18 @@
     </tr>
     </thead>
     <tbody id="project-table-body">
-    {% for pj in projects %}
+    {% for project_items in projects %}
     <tr>
         <td>{{ forloop.counter }}</td>
-        <td>{{pj.name}}</td>
-        <td><p class="btn create-task-btn" value="{{pj.pk}}">+</p></td>
+        <td>{{project_items.name}}</td>
+        <td><p class="btn create-task-btn" value="{{project_items.pk}}">+</p></td>
         <td>
             <button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal"
-                    data-bs-target="#project_edit" value="{{pj.pk}}">Edit
+                    data-bs-target="#project_edit" value="{{project_items.pk}}">Edit
             </button>
         </td>
         <td>
-            <button type="button" class="btn btn-primary delete-project-btn" value="{{pj.pk}}">Delete</button>
+            <button type="button" class="btn btn-primary delete-project-btn" value="{{project_items.pk}}">Delete</button>
         </td>
     </tr>
     {% endfor %}
@@ -195,7 +195,43 @@
 
 <!-- this modal for create task -->
 
-<div id="task-list-table"></div>
+
+<table class="table justify-content-center" id="task-list-table">
+    <button type="button" class="btn btn-dark" id="create-task-btn">create task</button>
+    <thead>
+    <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Project name</th>
+        <th scope="col">Task name</th>
+        <th scope="col">Assignee</th>
+        <th scope="col">Due Date</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody id="task-table-body">
+
+    {% for task_item in tasks %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{task_item.project_name}}</td>
+        <td>{{task_item.name}}</td>
+        <td>{{task_item.assignee_username}}</td>
+        <td>{{task_item.due_date}}</td>
+        <td>{{task_item.priority}}</td>
+        <td>
+            <button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal"
+                    data-bs-target="#project_edit" value="{{task_item.pk}}">Edit
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-primary delete-project-btn" value="{{task_item.pk}}">Delete</button>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
 
 <script src="{% static 'js/base.js' %}"></script>

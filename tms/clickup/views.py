@@ -21,8 +21,8 @@ class HomeView(APIView):
     def get(self, request):
         projects = Project.objects.all()
         queryset = User.objects.filter(is_active=True)
-
-        return Response({'request': request, "queryset": queryset, "projects": projects})
+        tasks = Task.objects.all()
+        return Response({'request': request, "queryset": queryset, "projects": projects, "tasks":tasks})
 
 
 def get_register_page(request):
