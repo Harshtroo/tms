@@ -24,7 +24,7 @@
 {% else %}
 {% endif %}
 
-<div id="table"></div>
+
 
 <!--This is  project list table  -->
 <table class="table justify-content-center" id="project-table">
@@ -174,7 +174,6 @@
                         <option value="pending">Pending</option>
                         <option value="in_process">In Process</option>
                         <option value="completed">Completed</option>
-
                     </select>
 
                 </div>
@@ -193,8 +192,7 @@
     </div>
 </div>
 
-<!-- this modal for create task -->
-
+<!-- this table for task list -->
 
 <table class="table justify-content-center" id="task-list-table">
     <button type="button" class="btn btn-dark" id="create-task-btn">create task</button>
@@ -211,7 +209,6 @@
     </tr>
     </thead>
     <tbody id="task-table-body">
-
     {% for task_item in tasks %}
     <tr>
         <td>{{ forloop.counter }}</td>

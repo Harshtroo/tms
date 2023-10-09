@@ -22,6 +22,7 @@ class HomeView(APIView):
         projects = Project.objects.all()
         queryset = User.objects.filter(is_active=True)
         tasks = Task.objects.all()
+
         return Response({'request': request, "queryset": queryset, "projects": projects, "tasks":tasks})
 
 

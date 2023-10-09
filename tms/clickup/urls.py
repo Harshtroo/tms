@@ -11,4 +11,5 @@ urlpatterns = [
     path("create_project/", views.ProjectAPIView.as_view(), name="create_project"),
     path("projects/<int:pk>/",views.ProjectAPIView.as_view(),name="project"),
     path("create_task/", views.TaskCreateView.as_view(), name="create_task"),
+    path("tasks/<int:pk>/",views.TaskCreateView.as_view(),name="task")
 ]

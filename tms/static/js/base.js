@@ -41,7 +41,7 @@ function postTokenAjaxCall(url, csrfToken, token, callback, resultData,redirectU
 }
 
 /* this function for edit and delete api call*/
-function patchDeleteAjaxCall(url, method, csrfToken, token, callback, resultData, redirectURL) {
+function patchDeleteAjaxCall(url, method, csrfToken, token, callback, resultData) {
   $.ajax({
     url: url,
     method: method,
