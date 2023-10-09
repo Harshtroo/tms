@@ -142,6 +142,7 @@ function editProject(){
         var callback = function(response){
             showMessage("Project successfully Edit", "green");
             $('.edit-modal').modal('hide')
+
             $('.modal-backdrop').remove();
             $("#message-container").fadeIn()
             setTimeout(function() {
