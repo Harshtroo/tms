@@ -35,7 +35,7 @@ $("#create_project").on("click",function(event){
         }, 2000);
         const tableBodyRowCount = $("#project-table-body tr").length
         var newRow =
-         `
+         `jQuery(".dname").find("td:eq(1)").text()
         <tr>
             <td>${tableBodyRowCount + 1}</td>
             <td>${response.data.name}</td>
@@ -90,6 +90,7 @@ function createTask(){
         setTimeout(function() {
             $("#message-container").fadeOut();
         }, 2000);
+
         const taskBodyRowCount =$("#task-table-body tr").length
         var newRow =
         `
@@ -102,6 +103,8 @@ function createTask(){
          </tr>
         `
         $("#task-table-body").append(newRow)
+        var projectHeading = $("#task-table-heading").length
+
     }
     postTokenAjaxCall(createTaskURL, csrfToken, token, callback, resultData, redirectURL)
 }
@@ -123,7 +126,6 @@ function editProject(){
          });
          for (var project_no = 1; project_no < projectDetails.length; project_no++) {
              if (projectDetails[project_no].id == projectGetId){
-
                  $("#edit-project-name").val(projectDetails[project_no].name);
                  $("#edit-summernote").val(projectDetails[project_no].description)
                  $('#edit-summernote').summernote('code', projectDetails[project_no].description);
@@ -133,7 +135,7 @@ function editProject(){
          $('.edit-modal').modal('show');
     })
     /* edit save button event handle */
-    $("#edit_project").on("click",function(){
+    $("#edit_project ").on("click",function(){
         var method = "PATCH"
         var resultData = {"name": $("#edit-project-name").val(),
                           "description":$("#edit-summernote").val()}
@@ -142,7 +144,7 @@ function editProject(){
         var callback = function(response){
             showMessage("Project successfully Edit", "green");
             $('.edit-modal').modal('hide')
-
+            $('#project-table').load(location.href + ' #project-table');
             $('.modal-backdrop').remove();
             $("#message-container").fadeIn()
             setTimeout(function() {
@@ -153,7 +155,7 @@ function editProject(){
     })
 }
 
-/* project edit functionality */
+/* project delete functionality */
 function projectDelete(){
     $(".delete-project-btn").on("click",function(){
         var method = "DELETE"
@@ -166,6 +168,7 @@ function projectDelete(){
         var callback = function(response){
             showMessage("Project deleted successfully", "green");
             currentRow.remove();
+
             $("#message-container").fadeIn()
             setTimeout(function() {
                 $("#message-container").fadeOut();
@@ -204,7 +207,7 @@ $("#selector").on("click",function(){
                 })
 
                 /* edit button functionality */
-                 $(document).on("click", ".edit-project-btn", editProject)
+                $(document).on("click", ".edit-project-btn", editProject)
 
                 /* delete button functionality */
                 $(".delete-project-btn").on("click",function(){
@@ -265,7 +268,7 @@ $("#task-list").on("click", function() {
 
         var tableHTML = `
           <table class="table justify-content-center">
-            <thead>
+            <thead >
               <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Project name</th>
@@ -326,8 +329,15 @@ $("#task-list").on("click", function() {
       }
 
       /* delete task functionality */
-      $(".task-delete").on("click",function(){
-            var method = "DELETE"
+      $(document).on("click", ".task-delete", taskDelete)
+
+    });
+  }
+});
+
+
+function taskDelete(){
+    var method = "DELETE"
             var resultData = $(this).val()
             var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
             var taskDeleteURL = "tasks/" + resultData + "/"
@@ -337,13 +347,12 @@ $("#task-list").on("click", function() {
             var callback = function(response){
                 showMessage("Task deleted successfully", "green");
                 currentRow.remove();
+
                 $("#message-container").fadeIn()
                 setTimeout(function() {
                     $("#message-container").fadeOut();
                 }, 2000);
             }
             patchDeleteAjaxCall(taskDeleteURL, method, csrfToken,token, callback, resultData)
-        })
-    });
-  }
-});
+
+}
