@@ -69,46 +69,6 @@ $("#create_project").on("click",function(event){
 })
 
 
-/* create task function */
-function createTask(){
-    var createTaskURL = "/create_task/"
-    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
-    var redirectURL = homeURL
-    var resultData = {"project":$("#select_project").val(),
-                       "name":$("#task-name").val(),
-                       "assignee":$("#select_user").val(),
-                       "due_date":$("#due-date").val(),
-                       "priority":$("#select-priority").val(),
-                       "status":$("#select-status").val(),
-                       "description":$("#create-task-summernote").val()}
-    var token = localStorage.getItem("token")
-    var callback = function(response){
-        showMessage(response.success_message, "green");
-        $(".create-task").hide()
-        $('.modal-backdrop').remove();
-        $("#message-container").fadeIn()
-        setTimeout(function() {
-            $("#message-container").fadeOut();
-        }, 2000);
-
-        const taskBodyRowCount =$("#task-table-body tr").length
-        var newRow =
-        `
-         <tr>
-            <td>${taskBodyRowCount + 1}</td>
-            <td>${response.data.project_name}</td>
-            <td>${response.data.name}</td>
-            <td>${response.data.assignee_username}</td>
-            <td>${response.data.priority}</td>
-         </tr>
-        `
-        $("#task-table-body").append(newRow)
-        var projectHeading = $("#task-table-heading").length
-
-    }
-    postTokenAjaxCall(createTaskURL, csrfToken, token, callback, resultData, redirectURL)
-}
-
 
 /* project edit functionality */
 function editProject(){
@@ -145,6 +105,7 @@ function editProject(){
             showMessage("Project successfully Edit", "green");
             $('.edit-modal').modal('hide')
             $('#project-table').load(location.href + ' #project-table');
+
             $('.modal-backdrop').remove();
             $("#message-container").fadeIn()
             setTimeout(function() {
@@ -205,12 +166,12 @@ $("#selector").on("click",function(){
                          });
                     $(".create-task").modal("show")
                 })
-
                 /* edit button functionality */
                 $(document).on("click", ".edit-project-btn", editProject)
 
                 /* delete button functionality */
                 $(".delete-project-btn").on("click",function(){
+
                     projectDelete()
                 })
           })
@@ -227,11 +188,70 @@ $("#create-task-btn").on("click",function(){
     $(".create-task").modal("show")
 })
 
-/* nav bar create task */
-$("#task_create").on("click",function(event){
-    event.preventDefault()
-    createTask()
-})
+
+/* create task function */
+
+function createTask(){
+    var createTaskURL = "/create_task/"
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+    var redirectURL = homeURL
+    var resultData = {"project":$("#select_project").val(),
+                       "name":$("#task-name").val(),
+                       "assignee":$("#select_user").val(),
+                       "due_date":$("#due-date").val(),
+                       "priority":$("#select-priority").val(),
+                       "status":$("#select-status").val(),
+                       "description":$("#create-task-summernote").val()}
+    var token = localStorage.getItem("token")
+    var callback = function(response){
+        showMessage(response.success_message, "green");
+        $(".create-task").hide()
+        $('.modal-backdrop').remove();
+        $("#message-container").fadeIn()
+        setTimeout(function() {
+            $("#message-container").fadeOut();
+        }, 2000);
+
+        const taskTableBodyRowCount = $("#task-table-body tr").length
+
+        var newTaskRow =
+        `jQuery(".dname").find("td:eq(1)").text()
+         <tr>
+            <td>${taskTableBodyRowCount + 1 }</td>
+            <td>${response.data.project_name}</td>
+            <td>${response.data.name}</td>
+            <td>${response.data.assignee_username}</td>
+            <td>${response.data.due_date}</td>
+            <td>${response.data.priority}</td>
+            <td>
+                <button id="task-edit" value="${response.data.id}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                      <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                  </svg>
+                </button>
+            </td>
+            <td>
+                <button class="task-delete" value="${response.data.id}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                  </svg>
+                </button>
+            </td>
+         </tr>
+        `
+        $("#task-table-body").append(newTaskRow)
+        $("#create-task-btn").on("click",function(event){
+            $(".create-task").modal("show")
+            event.preventDefault()
+
+        })
+
+    }
+    postTokenAjaxCall(createTaskURL, csrfToken, token, callback, resultData, redirectURL)
+}
+
+
 
 /* task list show */
 var taskTable = $("#task-list-table")
@@ -248,94 +268,111 @@ $("#task-list").on("click", function() {
   } else {
     taskTable.show();
     createTaskButton.show();
-    getAjaxCall(taskListURL, function(data) {
-      var taskDict = jQuery.map(data.results, function(val) {
-        return val;
-      });
+    var taskURL = "/create_task/"
+    getAjaxCall(taskURL,function(response){
+        $("#task_create").on("click",function(){
+            createTask()
+        })
+        $(document).on("click","#task-edit", taskEdit)
+        $(document).on("click", ".task-delete", taskDelete)
+    })
 
-      var taskGroups = {};
-      for (var task_no = 0; task_no < taskDict.length; task_no++) {
-        var project = taskDict[task_no].project;
-        if (!taskGroups[project]) {
-          taskGroups[project] = [];
-        }
-        taskGroups[project].push(taskDict[task_no]);
-      }
-      tableContainer.innerHTML = "";
-
-      for (var project in taskGroups) {
-        var tasks = taskGroups[project];
-
-        var tableHTML = `
-          <table class="table justify-content-center">
-            <thead >
-              <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Project name</th>
-                <th scope="col">Task name</th>
-                <th scope="col">Assignee</th>
-                <th scope="col">Due date</th>
-                <th scope="col">Priority</th>
-              </tr>
-            </thead>
-            <tbody>
-        `;
-
-        for (var task_no = 0; task_no < tasks.length; task_no++) {
-          var task = tasks[task_no];
-          var taskName = task.name;
-          var taskId = task.id
-          var assigneeId = task.assignee_username;
-          var dueDate = task.due_date;
-          var priority = task.priority;
-          var projectName = task.project_name
-          var dateArr = dueDate.split("-")
-          var formateDate = dateArr[2]+'-'+dateArr[1]+'-'+dateArr[0];
-
-          tableHTML += `
-            <tr>
-              <td>${task_no + 1}</td>
-              <td id="project-name-${task_no}">${projectName}</td>
-              <td>${taskName}</td>
-              <td>${assigneeId}</td>
-              <td>${formateDate}</td>
-              <td>${priority}</td>
-              <td>
-                <button id="task-edit" value=${taskId}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                  <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
-                  </svg>
-                </button>
-              </td>
-              <td>
-                <button class="task-delete" value=${taskId}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                  </svg>
-                </button>
-              </td>
-            </tr>
-          `;
-        }
-
-        tableHTML += `
-          </tbody>
-        </table>
-        `;
-        var tableDiv = document.createElement("div");
-        tableDiv.innerHTML = tableHTML;
-        tableContainer.appendChild(tableDiv);
-      }
-
-      /* delete task functionality */
-      $(document).on("click", ".task-delete", taskDelete)
-
-    });
   }
 });
 
+/* task edit functionality */
+function taskEdit(){
+    var taskId = $(this).val()
+    var taskEditURL = "tasks/" + taskId + "/"
 
+    getAjaxCall(taskEditURL, function(response){
+        taskDetails = jQuery.map(response,function(task_details){
+            return task_details
+        })
+        $(document).ready(function() {
+               $('#edit-create-task-summernote').summernote();
+               height: 200;
+               focus: true
+         });
+        for (task_no=1; task_no < taskDetails.length; task_no++){
+            if (taskDetails[task_no].id == taskId){
+                $("#edit-select_project").val(taskDetails[task_no].project)
+                $("#edit-task-name").val(taskDetails[task_no].name)
+                $("#edit-select_user").val(taskDetails[task_no].assignee)
+                $("#edit-due-date").val(taskDetails[task_no].due_date)
+                $("#edit-select-priority").val(taskDetails[task_no].priority)
+                $("#edit-select-status").val(taskDetails[task_no].status)
+                $("#edit-create-task-summernote").val(taskDetails[task_no].description)
+            }
+        }
+        $(".edit-task").modal("show")
+    })
+    $("#edit-task_create").on("click",function(){
+        var method = "PATCH"
+        var resultData = {"project":$("#edit-select_project").val(),
+                           "name":$("#edit-task-name").val(),
+                           "assignee":$("#edit-select_user").val(),
+                           "due_date":$("#edit-due-date").val(),
+                           "priority":$("#edit-select-priority").val(),
+                           "status":$("#edit-select-status").val(),
+                           "description":$("#edit-create-task-summernote").val()}
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+        var token = localStorage.getItem("token");
+        var callback = function(response){
+            showMessage("Task successfully Edit", "green");
+            $(".edit-task").modal("hide")
+            $('.modal-backdrop').remove();
+            $("#message-container").fadeIn()
+            setTimeout(function() {
+                $("#message-container").fadeOut();
+            }, 2000);
+            var updatedTaskRow = `
+            <tr>
+                <td></td>
+                <td>${resultData.project}</td>
+                <td>${resultData.name}</td>
+                <td>${resultData.assignee}</td>
+                <td>${resultData.due_date}</td>
+                <td>${resultData.priority}</td>
+                <td>${resultData.status}</td>
+                <td>${resultData.description}</td>
+                <td><button id="task-edit" value="${resultData.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                        </svg>
+                    </button>
+                </td>
+                <td>
+                    <button class="task-delete" value="${resultData.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+            `
+
+
+
+//            var updatedTaskRow = "<tr>" +
+//            "<td>" + resultData.project + "</td>" +
+//            "<td>" + resultData.name + "</td>" +
+//            "<td>" + resultData.assignee + "</td>" +
+//            "<td>" + resultData.due_date + "</td>" +
+//            "<td>" + resultData.priority + "</td>" +
+//            "<td>" + resultData.status + "</td>" +
+//            "<td>" + resultData.description + "</td>" +
+//            "</tr>";
+            $("#task-list-table tbody tr[data-task-id='" + taskId + "']").replaceWith(updatedTaskRow);
+        }
+        patchDeleteAjaxCall(taskEditURL, method, csrfToken, token, callback, resultData)
+    })
+}
+
+
+
+/* task delete functionality */
 function taskDelete(){
     var method = "DELETE"
             var resultData = $(this).val()
