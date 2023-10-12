@@ -94,6 +94,7 @@ function editProject(){
          }
          $('.edit-modal').modal('show');
     })
+
     /* edit save button event handle */
     $("#edit_project ").on("click",function(){
         var method = "PATCH"
@@ -104,13 +105,34 @@ function editProject(){
         var callback = function(response){
             showMessage("Project successfully Edit", "green");
             $('.edit-modal').modal('hide')
-            $('#project-table').load(location.href + ' #project-table');
-
+//            $('#project-table').load(location.href + ' #project-table');
             $('.modal-backdrop').remove();
             $("#message-container").fadeIn()
             setTimeout(function() {
                 $("#message-container").fadeOut();
             }, 2000);
+
+            var updateProjectRow = `
+            <tr data-project-id="${projectGetId}">
+                <td>${projectGetId}</td>
+                <td>${resultData.name}</td>
+                <td><p class="btn create-task-btn" value="{{project_items.pk}}">+</p></td>
+                <td>
+                    <button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal"
+                    data-bs-target="#project_edit" value="${resultData.id}">Edit
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary delete-project-btn" value="${resultData.id}">Delete</button>
+                </td>
+            </tr>
+            `
+
+            var projectTableBody = $("#project-table-body");
+            var projectRow = projectTableBody.find(`tr[data-project-id="${projectGetId}"]`)
+            projectRow.replaceWith(updateProjectRow);
+
+//            projectRow.find("td:eq(4)").text(resultData.description);
         }
         patchDeleteAjaxCall(projectEditURL, method, csrfToken, token, callback, resultData)
     })
@@ -353,8 +375,6 @@ function taskEdit(){
             </tr>
             `
 
-
-
 //            var updatedTaskRow = "<tr>" +
 //            "<td>" + resultData.project + "</td>" +
 //            "<td>" + resultData.name + "</td>" +
@@ -364,6 +384,7 @@ function taskEdit(){
 //            "<td>" + resultData.status + "</td>" +
 //            "<td>" + resultData.description + "</td>" +
 //            "</tr>";
+
             $("#task-list-table tbody tr[data-task-id='" + taskId + "']").replaceWith(updatedTaskRow);
         }
         patchDeleteAjaxCall(taskEditURL, method, csrfToken, token, callback, resultData)
