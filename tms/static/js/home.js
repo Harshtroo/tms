@@ -105,7 +105,6 @@ function editProject(){
         var callback = function(response){
             showMessage("Project successfully Edit", "green");
             $('.edit-modal').modal('hide')
-//            $('#project-table').load(location.href + ' #project-table');
             $('.modal-backdrop').remove();
             $("#message-container").fadeIn()
             setTimeout(function() {
@@ -131,7 +130,6 @@ function editProject(){
             var projectTableBody = $("#project-table-body");
             var projectRow = projectTableBody.find(`tr[data-project-id="${projectGetId}"]`)
             projectRow.replaceWith(updateProjectRow);
-
 //            projectRow.find("td:eq(4)").text(resultData.description);
         }
         patchDeleteAjaxCall(projectEditURL, method, csrfToken, token, callback, resultData)
