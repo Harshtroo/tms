@@ -40,7 +40,7 @@
     </thead>
     <tbody id="project-table-body">
     {% for project_items in projects %}
-    <tr>
+    <tr data-project-id="{{project_items.id}}">
         <td>{{ forloop.counter }}</td>
         <td>{{project_items.name}}</td>
         <td><p class="btn create-task-btn" value="{{project_items.pk}}">+</p></td>
@@ -210,6 +210,7 @@
     </thead>
     <tbody id="task-table-body">
     {% for task_item in tasks %}
+
     <tr data-task-id="{{task_item.id}}">
         <td>{{ forloop.counter }}</td>
         <td>{{task_item.project}}</td>
@@ -315,11 +316,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 
 <script src="{% static 'js/base.js' %}"></script>
 <script src="{% static 'js/home.js' %}"></script>

@@ -34,9 +34,10 @@ $("#create_project").on("click",function(event){
             $("#message-container").fadeOut();
         }, 2000);
         const tableBodyRowCount = $("#project-table-body tr").length
+
         var newRow =
          `jQuery(".dname").find("td:eq(1)").text()
-        <tr>
+        <tr data-project-id="${response.data.id}">
             <td>${tableBodyRowCount + 1}</td>
             <td>${response.data.name}</td>
             <td><p class="btn create-task-btn" value="${response.data.id}" >+</p></td>
@@ -63,11 +64,9 @@ $("#create_project").on("click",function(event){
         $(".delete-project-btn").on("click",function(){
             projectDelete()
         })
-
     };
     postTokenAjaxCall(projectURL, csrfToken, token, callback, resultData,redirectURL)
 })
-
 
 
 /* project edit functionality */
@@ -110,27 +109,32 @@ function editProject(){
             setTimeout(function() {
                 $("#message-container").fadeOut();
             }, 2000);
-
+            const tableCountRow =  $("#project-table-body tr").length
             var updateProjectRow = `
             <tr data-project-id="${projectGetId}">
-                <td>${projectGetId}</td>
+                <td>${tableCountRow + 1}</td>
                 <td>${resultData.name}</td>
                 <td><p class="btn create-task-btn" value="{{project_items.pk}}">+</p></td>
                 <td>
                     <button type="button" class="btn btn-primary edit-project-btn" data-bs-toggle="modal"
-                    data-bs-target="#project_edit" value="${resultData.id}">Edit
+                    data-bs-target="#project_edit" value="${projectGetId}">Edit
                     </button>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-primary delete-project-btn" value="${resultData.id}">Delete</button>
+                    <button type="button" class="btn btn-primary delete-project-btn" value="${projectGetId}">Delete</button>
                 </td>
             </tr>
             `
-
-            var projectTableBody = $("#project-table-body");
-            var projectRow = projectTableBody.find(`tr[data-project-id="${projectGetId}"]`)
+            var projectTable = $("#project-table");
+            var projectRow = projectTable.find(`tbody tr[data-project-id="${projectGetId}"]`)
             projectRow.replaceWith(updateProjectRow);
-//            projectRow.find("td:eq(4)").text(resultData.description);
+            $(".create-task-btn").on("click",function(){
+                $(".create-task").show()
+                createTask()
+            })
+            $(".delete-project-btn").on("click",function(){
+                projectDelete()
+            })
         }
         patchDeleteAjaxCall(projectEditURL, method, csrfToken, token, callback, resultData)
     })
@@ -222,6 +226,7 @@ function createTask(){
                        "priority":$("#select-priority").val(),
                        "status":$("#select-status").val(),
                        "description":$("#create-task-summernote").val()}
+
     var token = localStorage.getItem("token")
     var callback = function(response){
         showMessage(response.success_message, "green");
@@ -231,8 +236,12 @@ function createTask(){
         setTimeout(function() {
             $("#message-container").fadeOut();
         }, 2000);
-
         const taskTableBodyRowCount = $("#task-table-body tr").length
+        var getDate = response.data.due_date
+        var convertedDate = new Date(getDate);
+        var options = { day: 'numeric', month: 'short', year: 'numeric' };
+        var formattedDate = convertedDate.toLocaleDateString('en-US', options);
+
 
         var newTaskRow =
         `jQuery(".dname").find("td:eq(1)").text()
@@ -241,7 +250,7 @@ function createTask(){
             <td>${response.data.project_name}</td>
             <td>${response.data.name}</td>
             <td>${response.data.assignee_username}</td>
-            <td>${response.data.due_date}</td>
+            <td>${formattedDate}</td>
             <td>${response.data.priority}</td>
             <td>
                 <button id="task-edit" value="${response.data.id}">
@@ -260,6 +269,7 @@ function createTask(){
             </td>
          </tr>
         `
+
         $("#task-table-body").append(newTaskRow)
         $("#create-task-btn").on("click",function(event){
             $(".create-task").modal("show")
@@ -296,7 +306,6 @@ $("#task-list").on("click", function() {
         $(document).on("click","#task-edit", taskEdit)
         $(document).on("click", ".task-delete", taskDelete)
     })
-
   }
 });
 
@@ -346,24 +355,25 @@ function taskEdit(){
             setTimeout(function() {
                 $("#message-container").fadeOut();
             }, 2000);
+            const taskTableRowCount = $("#task-table-body tr").length
             var updatedTaskRow = `
-            <tr>
-                <td></td>
+            <tr data-project-id="${taskId}">
+                <td>${taskTableRowCount}</td>
                 <td>${resultData.project}</td>
                 <td>${resultData.name}</td>
                 <td>${resultData.assignee}</td>
                 <td>${resultData.due_date}</td>
                 <td>${resultData.priority}</td>
-                <td>${resultData.status}</td>
+
                 <td>${resultData.description}</td>
-                <td><button id="task-edit" value="${resultData.id}">
+                <td><button id="task-edit" value="${taskId}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
                             <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
                         </svg>
                     </button>
                 </td>
                 <td>
-                    <button class="task-delete" value="${resultData.id}">
+                    <button class="task-delete" value="${taskId}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
                             <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
@@ -372,17 +382,10 @@ function taskEdit(){
                 </td>
             </tr>
             `
-
-//            var updatedTaskRow = "<tr>" +
-//            "<td>" + resultData.project + "</td>" +
-//            "<td>" + resultData.name + "</td>" +
-//            "<td>" + resultData.assignee + "</td>" +
-//            "<td>" + resultData.due_date + "</td>" +
-//            "<td>" + resultData.priority + "</td>" +
-//            "<td>" + resultData.status + "</td>" +
-//            "<td>" + resultData.description + "</td>" +
-//            "</tr>";
-
+            debugger
+            var taskTable = $("#task-list-table")
+            var taskRow = taskTable.find(`tbody tr[data-project-id="${taskId}"]`)
+            taskRow.replaceWith(updatedTaskRow)
             $("#task-list-table tbody tr[data-task-id='" + taskId + "']").replaceWith(updatedTaskRow);
         }
         patchDeleteAjaxCall(taskEditURL, method, csrfToken, token, callback, resultData)
